@@ -3,9 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
+    "d3-dsv": "^1.0.10",
+    "electron": "^3.0.2",
+    "file-saver": "^2.0.0",
+    "filesaver": "0.0.13",
+    "immutable": "^3.8.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
+    "react-redux": "^6.0.0",
+    "react-scripts": "2.1.1",
+    "redux": "^4.0.1",
+    "redux-form": "^7.4.2",
+    "redux-thunk": "^2.3.0",
+    "sfcookies": "^1.0.2",
+    "xml-js": "^1.6.7",
+    "xml-to-json-promise": "0.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
