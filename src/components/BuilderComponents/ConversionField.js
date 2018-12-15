@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import "../css/MapBuilder.css"
 
 class ConversionField extends Component {
     constructor(props) {
@@ -29,9 +30,9 @@ class ConversionField extends Component {
     setUnit(e){this.setState({unit:e.target.value}); console.log("!!",this.state)}
 
 
-    render() { console.log("CONVERS",this.props)
+    render() { //console.log("CONVERS",this.props)
         return (
-            <div>
+            <div className="fieldBox" >
                     <span><h3>{this.props.sesarValues.sesarName}</h3>
                     <h5 style={{fontStyle:"italic",color:"grey"}}>{this.displayExample()}</h5>
                     </span>

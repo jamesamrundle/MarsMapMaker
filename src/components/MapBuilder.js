@@ -27,8 +27,6 @@ class MapBuilder extends Component {
         this.handleFileUpload = this.handleFileUpload.bind(this)
         this.readToCSV = this.readToCSV.bind(this)
         this.renderOptions = this.renderOptions.bind(this)
-        // this.getIt=this.getIt.bind(this)
-        this.handleClick = this.handleClick.bind(this)
         this.renderfields = this.renderfields.bind(this);
         this.makeMapFile = this.makeMapFile.bind(this);
     }
@@ -67,15 +65,17 @@ class MapBuilder extends Component {
 
     async readToCSV(file) {
         var userFields = d3.csvParse(file)
-        console.log("CSV", userFields)
-        console.log("cols:", userFields.columns)
-        console.log("uf0", userFields[0])
+        // console.log("CSV", userFields)//all data
+        // console.log("cols:", userFields.columns) //column names
+        // console.log("uf0", userFields[0]); //column,value of first inputs
+
         Object.keys(userFields[0]).map(each => this.setState({
             fields:
                 {
                     ...this.state.fields,
                     [each]:
-                        {disabled: false}
+                        {disabled: false,
+                        exampleValue:userFields[0][each]} //logs first value of field
                 }
         }))//this.state.fields."each"
 
@@ -90,71 +90,44 @@ class MapBuilder extends Component {
 
                 var d = this.state.fields[each].disabled
 
-                return <option id={each} onClick={this.handleClick} disabled={d}>{each}</option>
+                return <option id={each} onClick={this.toggleDisable} disabled={d}>{each}</option>
             })
         } else return ""
     }
 
 
 
-    handleClick = (e) => {
-        var x = e.target.id
-        console.log("...", e)
-
-        this.setState(preState => ({
-            fields: {
-                ...this.state.fields,
-                [x]: {disabled: !preState.fields[x].disabled}
-            },
-        }));
-
-        // !this.state.fields[x].disabled ?
-        //     cat[x].disabled = true : cat[x].disabled = false
-        //
-        //     this.setState({fields:cat})
-
-    }
-
-
 
     renderfields() {
+
         var userFields = Object.keys(this.state.fields)
+
         var testFields = {name: {sesarName: "name", fieldFormat: "one2one", userValues: null},
             collection_start_date: {sesarName: "collection_start_date", fieldFormat: "dateFormat", userValues: null},
             size: {sesarName: "size", fieldFormat: "conversion", userValues: null},
             sample_description: {sesarName: "sample_description", fieldFormat: "multi2one", userValues: null}}
 
-            var setStatePiece= (sesarName,mappingValues,format)=>{
-            this.setState(preState => ({
-                mapValues: {
-                    ...this.state.mapValues,
-                    [sesarName]:{userValues:mappingValues,sesarName:sesarName,format:format}
-                }, /*state = {
-            file: [], fields: {}, mapValues:{},
-                mapFields{userValues:[], seSarName: , format: , extra: }*/
-            }));
-            console.log("set StatePiece",this.state)
-            }
+        var setToBeMapped= (sesarName,mappingValues,format)=>{
+            this.setState(preState => ({    mapValues: {
+                                ...this.state.mapValues,
+                                [sesarName]:{userValues:mappingValues,sesarName:sesarName,format:format}
+                                }
+                                }));// console.log("set StatePiece",this.state)
+        };
 
-        var callBack =(mappingValues,sesarName,format)=> { //change callback to use passed state
-
-            console.log("In callback, MV:", mappingValues,"\neach:", sesarName,"format: ",format)
-
-            setStatePiece(sesarName,mappingValues,format)
+        var toggleDisable = (e) => {
+            (e.field).map(each =>{  console.log("...", each)
+                this.setState(preState => ({ fields: {...this.state.fields,
+                        [each]: {...preState.fields[each],disabled: !preState.fields[each].disabled}
+                    }}))});
         }
 
-            var updateAvailFields= (fields) =>{ //ON PAUSE TILL I GET MAPPING FINISHED
-                //need to modify so app passes field obj instead of keys. handle as keys in component
-            fields.map(field=>{
-                console.log("FIELD",fields)
-                this.setState(preState => ({
-                fields: {
-                    ...this.state.fields,[field]: {disabled: !preState.fields[field].disabled}
+        var callBack =(mappingValues,sesarName,format)=> { //on button click toggles disable for option and sets mapping variable
+            toggleDisable(mappingValues);
+            setToBeMapped(sesarName,mappingValues,format)
+        };
 
-                }
-            }))
-        })
-        }
+
 
 
         if (userFields) {
@@ -162,21 +135,23 @@ class MapBuilder extends Component {
 
                     switch (value.fieldFormat) {
                         case "one2one":
-                            return  <One2One sesarValues={value} userFields={userFields} format={value.fieldFormat} callback={callBack} />;
+                            return  <One2One className="fieldBox" sesarValues={value} handleClick={this.toggleDisable}
+                                             userFields={userFields} userFelds={this.state.fields}
+                                             format={value.fieldFormat} callback={callBack} />;
                             /*this.renderOne2One({...value},((e)=>{testFields[each].userValues=e.target.value;console.log(testFields)}));*/
                             break;
                         case "dateFormat":
-                            return  <One2DateFormat sesarValues={value} userFields={userFields} format={value.fieldFormat} callback={callBack}  />
+                            return  <One2DateFormat className="fieldBox" sesarValues={value} userFields={userFields} format={value.fieldFormat} callback={callBack}  />
                             /*this.renderDateFormat({...value},((e)=>{testFields[each].userValues=e.target.value;console.log(testFields)}));*/
                             break;
                         case"multi2one":
-                           return <Multi2One sesarValues={value} userFields={userFields} format={value.fieldFormat} callback={callBack} updateFields={updateAvailFields} >WTF</Multi2One>
+                           return <Multi2One sesarValues={value} userFields={userFields} format={value.fieldFormat} callback={callBack}  >WTF</Multi2One>
 
                             // return this.rendermulti2One({...value},((e)=>{testFields[each].userValues=(Object.entries(e.target.selectedOptions).map(each=>{return each.id}));console.log(testFields)}));
                             break;
                         case "conversion":
                             return <ConversionField sesarValues={value} userFields={userFields} format={value.fieldFormat}
-                                        updateFields={updateAvailFields} callback={callBack} />
+                                        callback={callBack} />
                             /*this.renderConversion({...value},((e)=>{testFields[each].userValues=(e.target.value);console.log(testFields)}),
                                 ((e)=>{testFields[each].unit=e.target.value;console.log("woo",testFields)}));*/
                             break;

@@ -1,3 +1,17 @@
-input:hover {
+.dateFormatter{
+    position: relative;
+}
 
+.fieldBox{
+    margin-bottom: 50px;
+}
+
+#dateTxtBox
+{
+    font-size:18pt;
+
+}
+
+#sel2{
+    width:25ch;
 }

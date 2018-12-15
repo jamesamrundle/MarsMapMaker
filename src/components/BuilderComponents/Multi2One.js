@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import "../css/MapBuilder.css"
 
 class Multi2One extends Component {
     constructor(props) {
@@ -34,7 +35,7 @@ class Multi2One extends Component {
     userFields= this.props.userFields;
     render() {
         return (
-            <div>
+            <div className="fieldBox" >
                     <span>
                         <h3>{this.props.sesarValues.sesarName}</h3>
                         <h5 style={{fontStyle:"italic",color:"grey"}}>{this.displayExample()}</h5>
