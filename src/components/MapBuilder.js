@@ -107,6 +107,13 @@ class MapBuilder extends Component {
             size: {sesarName: "size", fieldFormat: "conversion", userValues: null},
             sample_description: {sesarName: "sample_description", fieldFormat: "multi2one", userValues: null}}
 
+        var changeFormat(sesarField,newFormat){
+            if(newFormat !== this.testFields[sesarField].fieldFormat){
+                this.testFields[sesarField].fieldFormat = newFormat;
+            }
+                }
+
+
         var setToBeMapped= (sesarName,mappingValues,format)=>{
             this.setState(preState => ({    mapValues: {
                                 ...this.state.mapValues,
@@ -127,7 +134,6 @@ class MapBuilder extends Component {
             ToggleDisable(mappingValues);
             setToBeMapped(sesarName,mappingValues,format)
         };
-
 
 
 
