@@ -9,24 +9,33 @@ class ConversionField extends Component {
 
         this.setField=this.setField.bind(this);
         this.setUnit=this.setUnit.bind(this);
-
     }
 
     displayExample(){
         if(this.state.field&&this.state.field.length >0) {
             return (
                 this.props.sesarValues.sesarName+ " : " + "["+this.state.field.toString()+"]"
-
             )}
         else return ""
     }
 
-    userFields= this.props.userFields;
+    renderChoices(){
+        var defined = (value) => " Ex : "+(value.exampleValue!=""?value.exampleValue:"undefined")
 
-    renderOptions(){ if(this.props.userFields != null ){
-        return (this.userFields.map(each => {return <option id={each} >{each}</option>}))
-    }}
-    setField(e){this.setState({field:[e.target.value]})}
+        const allChoices = Object.entries(this.props.userFelds).map(
+            ([key, value]) =>{
+                if (!value.disabled) return (
+                    <option id={key}  >
+                        {key+" "}+ {defined(value) } </option>)
+                else return (
+                    <option   id={key} disabled={value.disabled} >
+                        {key+" "} +{defined(value)} </option>
+                )});
+        return allChoices;
+    }
+
+
+    setField(e){this.setState({field:[e.target.value.split(" ")[0]]})}
     setUnit(e){this.setState({unit:e.target.value}); console.log("!!",this.state)}
 
 
@@ -36,10 +45,8 @@ class ConversionField extends Component {
                     <span><h3>{this.props.sesarValues.sesarName}</h3>
                     <h5 style={{fontStyle:"italic",color:"grey"}}>{this.displayExample()}</h5>
                     </span>
-                <select className="form-control" id="sel2" name="sellist2" onChange={this.setField}
-                        onBlur={()=>this.props.updateFields(this.state.field)}>
-                    {this.props.userFields.map(each => {return <option id={each} >{each}</option>})}
-                    {/*<this.renderOptions cat={"ok"}></this.renderOptions>//callback for this shittttttt*/}
+                <select className="form-control" id="sel2" name="sellist2" onChange={this.setField}>
+                    {this.renderChoices()}
                 </select>
                 <form>
                     <fieldset>

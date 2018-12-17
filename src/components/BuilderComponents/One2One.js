@@ -34,17 +34,14 @@ class One2One extends Component {
                 else return (
                     <option   id={key} disabled={value.disabled} >
                         {key+" "} +{defined(value)} </option>
-                )
-            })
+                )});
 
         return allChoices;
     }
 
     render() {
         // for(var each in this.props.userFelds){console.log("fuggmane",each)}
-        Object.entries(this.props.userFelds).map(
-            ([key, value]) => console.log("fugg:",key,"mane:", value.exampleValue)
-        );
+
         return (
             <div className="fieldBox">
                     <span><h3>{this.props.sesarValues.sesarName}</h3>
@@ -52,8 +49,6 @@ class One2One extends Component {
                     </span>
                 <select  className="form-control" id="sel2" name="sellist2" onChange={this.setField}
                     /*onBlur={()=>this.props.updateFields(this.state.field)}*/>
-
-                    {/*{this.props.userFields.map(each => {return <option id={each} >{each}</option>})}*/}
                     {this.renderChoices()}
                 </select>
                 <button onClick={()=>this.props.callback(this.state,this.props.sesarValues.sesarName, this.props.format)} >Make it so</button>

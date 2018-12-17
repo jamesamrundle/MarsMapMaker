@@ -115,15 +115,16 @@ class MapBuilder extends Component {
                                 }));// console.log("set StatePiece",this.state)
         };
 
-        var toggleDisable = (e) => {
-            (e.field).map(each =>{  console.log("...", each)
-                this.setState(preState => ({ fields: {...this.state.fields,
-                        [each]: {...preState.fields[each],disabled: !preState.fields[each].disabled}
-                    }}))});
-        }
+
+        var ToggleDisable = (e) => {
+            var copy = {...this.state.fields};
+            (e.field).map(each =>{
+                copy[each].disabled = !copy[each].disabled
+        });
+        this.setState({fields:{...copy}})}
 
         var callBack =(mappingValues,sesarName,format)=> { //on button click toggles disable for option and sets mapping variable
-            toggleDisable(mappingValues);
+            ToggleDisable(mappingValues);
             setToBeMapped(sesarName,mappingValues,format)
         };
 
@@ -135,23 +136,28 @@ class MapBuilder extends Component {
 
                     switch (value.fieldFormat) {
                         case "one2one":
-                            return  <One2One className="fieldBox" sesarValues={value} handleClick={this.toggleDisable}
+                            return  <One2One className="fieldBox" sesarValues={value}
                                              userFields={userFields} userFelds={this.state.fields}
                                              format={value.fieldFormat} callback={callBack} />;
                             /*this.renderOne2One({...value},((e)=>{testFields[each].userValues=e.target.value;console.log(testFields)}));*/
                             break;
                         case "dateFormat":
-                            return  <One2DateFormat className="fieldBox" sesarValues={value} userFields={userFields} format={value.fieldFormat} callback={callBack}  />
+                            return  <One2DateFormat className="fieldBox" sesarValues={value}
+                                                    userFields={userFields} userFelds={this.state.fields}
+                                                    format={value.fieldFormat} callback={callBack}  />
                             /*this.renderDateFormat({...value},((e)=>{testFields[each].userValues=e.target.value;console.log(testFields)}));*/
                             break;
                         case"multi2one":
-                           return <Multi2One sesarValues={value} userFields={userFields} format={value.fieldFormat} callback={callBack}  >WTF</Multi2One>
+                           return <Multi2One className="fieldBox" sesarValues={value}
+                                             userFields={userFields}  userFelds={this.state.fields}
+                                             format={value.fieldFormat} callback={callBack} ></Multi2One>
 
                             // return this.rendermulti2One({...value},((e)=>{testFields[each].userValues=(Object.entries(e.target.selectedOptions).map(each=>{return each.id}));console.log(testFields)}));
                             break;
                         case "conversion":
-                            return <ConversionField sesarValues={value} userFields={userFields} format={value.fieldFormat}
-                                        callback={callBack} />
+                            return <ConversionField className="fieldBox" sesarValues={value}
+                                                    userFields={userFields} userFelds={this.state.fields}
+                                                    format={value.fieldFormat} callback={callBack} />
                             /*this.renderConversion({...value},((e)=>{testFields[each].userValues=(e.target.value);console.log(testFields)}),
                                 ((e)=>{testFields[each].unit=e.target.value;console.log("woo",testFields)}));*/
                             break;
