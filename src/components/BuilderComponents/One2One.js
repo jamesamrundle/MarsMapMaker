@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import "../css/MapBuilder.css"
+import One2DateFormat from "./One2DateFormat"
 
 class One2One extends Component {
     constructor(props) {
@@ -41,7 +42,7 @@ class One2One extends Component {
 
     render() {
         // for(var each in this.props.userFelds){console.log("fuggmane",each)}
-
+        if(this.props.format == "one2one"){
         return (
             <div className="fieldBox">
                     <span><h3>{this.props.sesarValues.sesarName}</h3>
@@ -52,9 +53,16 @@ class One2One extends Component {
                     {this.renderChoices()}
                 </select>
                 <button onClick={()=>this.props.callback(this.state,this.props.sesarValues.sesarName, this.props.format)} >Make it so</button>
+
             </div>
 
-        );
+        );}
+        else if(this.props.format === "dateFormat"){
+            return  <One2DateFormat className="fieldBox" sesarValues={this.props.sesarValues}
+                                           userFields={this.props.userFields} userFelds={this.props.userFelds}
+                                           format={this.props.format} callback={this.props.callBack}  />
+        }
+    return <line>hi</line>
     }
 }
 

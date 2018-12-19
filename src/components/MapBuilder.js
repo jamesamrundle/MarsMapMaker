@@ -3,12 +3,10 @@ import connect from "react-redux/es/connect/connect";
 import fieldsDict from "./hoc/fieldsDict"
 import './css/MapBuilder.css'
 import * as d3 from "d3-dsv"
-import ConversionField from "./BuilderComponents/ConversionField"
-import One2One from "./BuilderComponents/One2One"
-import One2DateFormat from "./BuilderComponents/One2DateFormat"
-import Multi2One from "./BuilderComponents/Multi2One"
+
 import saveAs from 'file-saver';
 import mapPrinter from "./BuilderComponents/mapPrinter"
+import RenderFormats from "./BuilderComponents/RenderFormats"
 
 var text = "original_archive,current archive,platform_name,cruise_field_prgrm,name,collection_method,collection_start_date,collection_end_date,latitude,latitude_end,longitude,longitude_end,elevation,elevation_end,size,size_unit CM IS COMMON,,collector,primary_location_type,igsn,,sample_comment,,field_name KEYED LIST,sample description,geological_age,age (min)MA,age (max)MA,sample_comment,classification,sample description,sample_type"
 
@@ -21,7 +19,7 @@ class MapBuilder extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            file: [], fields: {}, mapValues:{},
+            file: [], fields: {}, mapValues: {},
         }
 
         this.handleFileUpload = this.handleFileUpload.bind(this)
@@ -30,7 +28,6 @@ class MapBuilder extends Component {
         this.renderfields = this.renderfields.bind(this);
         this.makeMapFile = this.makeMapFile.bind(this);
     }
-
 
 
     async handleFileUpload(e) {
@@ -68,19 +65,33 @@ class MapBuilder extends Component {
         // console.log("CSV", userFields)//all data
         // console.log("cols:", userFields.columns) //column names
         // console.log("uf0", userFields[0]); //column,value of first inputs
+        var tempStateObject = {}
+        Object.keys(userFields[0]).map(each => {
 
-        Object.keys(userFields[0]).map(each => this.setState({
-            fields:
-                {
-                    ...this.state.fields,
-                    [each]:
-                        {disabled: false,
-                        exampleValue:userFields[0][each]} //logs first value of field
-                }
-        }))//this.state.fields."each"
+                tempStateObject[each] = {
+                    disabled: false,
+                    exampleValue: userFields[0][each]
+                } //logs first value of field
+            }
+        )
+        this.setState({fields:tempStateObject})
+        console.log("stert",this.state)
+    }//this.state.fields."each"
 
+
+    text = "original_archive,current archive,platform_name,cruise_field_prgrm,name,collection_method,collection_start_date,collection_end_date,latitude,latitude_end,longitude,longitude_end,elevation,elevation_end,size,size_unit CM IS COMMON,,collector,primary_location_type,igsn,,sample_comment,,field_name KEYED LIST,sample description,geological_age,age (min)MA,age (max)MA,sample_comment,classification,sample description,sample_type"
+
+    newtext = text.split(",");
+
+    didCreateSZFields = false;
+
+    addSZFieldstoState(){
+       var  sesarFieldStateObject = {}
+        this.newtext.map((sesarField)=>sesarFieldStateObject[sesarField]={sesarField:sesarField,fieldFormat:null})
+         this.setState({sesarFields:sesarFieldStateObject})
+       this.didCreateSZFields=true;
+        console.log("STATE",this.state)
     }
-
 
     renderOptions = (props)=> { //all the field options from uploaded csv
         var userFields = Object.keys(this.state.fields)
@@ -107,9 +118,12 @@ class MapBuilder extends Component {
             size: {sesarName: "size", fieldFormat: "conversion", userValues: null},
             sample_description: {sesarName: "sample_description", fieldFormat: "multi2one", userValues: null}}
 
-        var changeFormat(sesarField,newFormat){
-            if(newFormat !== this.testFields[sesarField].fieldFormat){
-                this.testFields[sesarField].fieldFormat = newFormat;
+        var changeFormat=(e,sesarField)=>{
+
+            var newFormat = e.target.value;
+            if(newFormat !== this.state.sesarFields[sesarField].fieldFormat){
+                this.setState(preState => ({sesarFields:{ ...this.state.sesarFields,
+                    [sesarField].fieldFormat: [newFormat]};
             }
                 }
 
@@ -136,40 +150,19 @@ class MapBuilder extends Component {
         };
 
 
+/*className="fieldBox" sesarValues={value}
+                                 userFields={userFields} userFelds={this.state.fields}
+                                 format={value.fieldFormat} callback={callBack}
+                                 changeFormat={changeFormat}/>;
+*/
+        if (userFields.length > 0) {
+            return Object.entries(this.state.sesarFields).map(([each, value]) => { //each is the sesar field object
+                console.log("renderformats",value)
+                return <div> :) <RenderFormats sesarValues={value}
+                               userFields={userFields} userFelds={this.state.fields}
+                               format={value.fieldFormat} callback={callBack}
+                                               changeFormat={changeFormat}/> </div>
 
-        if (userFields) {
-            return Object.entries(testFields).map(([each, value]) => { //each is the sesar field object
-
-                    switch (value.fieldFormat) {
-                        case "one2one":
-                            return  <One2One className="fieldBox" sesarValues={value}
-                                             userFields={userFields} userFelds={this.state.fields}
-                                             format={value.fieldFormat} callback={callBack} />;
-                            /*this.renderOne2One({...value},((e)=>{testFields[each].userValues=e.target.value;console.log(testFields)}));*/
-                            break;
-                        case "dateFormat":
-                            return  <One2DateFormat className="fieldBox" sesarValues={value}
-                                                    userFields={userFields} userFelds={this.state.fields}
-                                                    format={value.fieldFormat} callback={callBack}  />
-                            /*this.renderDateFormat({...value},((e)=>{testFields[each].userValues=e.target.value;console.log(testFields)}));*/
-                            break;
-                        case"multi2one":
-                           return <Multi2One className="fieldBox" sesarValues={value}
-                                             userFields={userFields}  userFelds={this.state.fields}
-                                             format={value.fieldFormat} callback={callBack} ></Multi2One>
-
-                            // return this.rendermulti2One({...value},((e)=>{testFields[each].userValues=(Object.entries(e.target.selectedOptions).map(each=>{return each.id}));console.log(testFields)}));
-                            break;
-                        case "conversion":
-                            return <ConversionField className="fieldBox" sesarValues={value}
-                                                    userFields={userFields} userFelds={this.state.fields}
-                                                    format={value.fieldFormat} callback={callBack} />
-                            /*this.renderConversion({...value},((e)=>{testFields[each].userValues=(e.target.value);console.log(testFields)}),
-                                ((e)=>{testFields[each].unit=e.target.value;console.log("woo",testFields)}));*/
-                            break;
-                        default:
-                            return <div>Broked</div>
-                    }
                 }
             )
         }
@@ -196,6 +189,9 @@ handleSelect(e){
     ;
  }
     render() {
+
+        if(!this.didCreateSZFields)this.addSZFieldstoState();
+
         return (
 
 
