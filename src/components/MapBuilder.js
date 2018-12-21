@@ -118,14 +118,21 @@ class MapBuilder extends Component {
             size: {sesarName: "size", fieldFormat: "conversion", userValues: null},
             sample_description: {sesarName: "sample_description", fieldFormat: "multi2one", userValues: null}}
 
-        var changeFormat=(e,sesarField)=>{
-
+        var changeFormat=(e,sesarField)=> {
             var newFormat = e.target.value;
-            if(newFormat !== this.state.sesarFields[sesarField].fieldFormat){
-                this.setState(preState => ({sesarFields:{ ...this.state.sesarFields,
-                    [sesarField].fieldFormat: [newFormat]};
+            console.log("cf newformat =", "cf sesarField =",sesarField)
+
+            if (newFormat !== this.state.sesarFields[sesarField].fieldFormat) {
+                this.setState(preState => ({
+                        sesarFields: {
+                            ...this.state.sesarFields,
+                            [sesarField]: {sesarField: sesarField, fieldFormat: newFormat}
+                        }
+                    }
+
+                ))
             }
-                }
+        }
 
 
         var setToBeMapped= (sesarName,mappingValues,format)=>{
@@ -157,11 +164,10 @@ class MapBuilder extends Component {
 */
         if (userFields.length > 0) {
             return Object.entries(this.state.sesarFields).map(([each, value]) => { //each is the sesar field object
-                console.log("renderformats",value)
+               // console.log("renderformats",value)
                 return <div> :) <RenderFormats sesarValues={value}
                                userFields={userFields} userFelds={this.state.fields}
-                               format={value.fieldFormat} callback={callBack}
-                                               changeFormat={changeFormat}/> </div>
+                                callback={callBack} changeFormat={changeFormat}/> </div>
 
                 }
             )

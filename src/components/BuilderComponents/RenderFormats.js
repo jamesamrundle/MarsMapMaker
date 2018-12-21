@@ -14,16 +14,23 @@ class RenderFormats extends Component {
         this.switchStatement = this.switchStatement.bind(this);
     }
 
+    /*##### Updates State from props after radio button changeFormat callback*/
+    componentWillReceiveProps(nextProps){
+        this.setState({format: nextProps.format})
+    }
+
 
     switchStatement(){
-        console.log("IN SWITCH")
-       var  callBack = this.props.callback
+
+        var  callBack = this.props.callback
         var value = this.props.sesarValues
         var userFields = this.props.userFields
         var userFelds = this.props.userFelds
-        switch (value.fieldFormat) {
+
+        switch (this.state.format) {
 
             case "dateFormat":
+                console.log("switch 12d")
                 return <One2DateFormat className="fieldBox" sesarValues={value}
                                     userFields={userFields} userFelds={userFelds}
                                     format={this.state.format} callback={callBack}/>
@@ -32,42 +39,48 @@ class RenderFormats extends Component {
                 /*this.renderDateFormat({...value},((e)=>{testFields[each].userValues=e.target.value;console.log(testFields)}));*/
                 break;
             case"multi2one":
+                console.log("switch m21")
                 return <Multi2One className="fieldBox" sesarValues={value}
                                   userFields={userFields}  userFelds={userFelds}
                                   format={this.state.format} callback={callBack} />
 
-                // return this.rendermulti2One({...value},((e)=>{testFields[each].userValues=(Object.entries(e.target.selectedOptions).map(each=>{return each.id}));console.log(testFields)}));
                 break;
             case "conversion":
+                console.log("switch conv")
                 return <ConversionField className="fieldBox" sesarValues={value}
                                         userFields={userFields} userFelds={userFelds}
                                         format={this.state.format} callback={callBack} />
-                /*this.renderConversion({...value},((e)=>{testFields[each].userValues=(e.target.value);console.log(testFields)}),
-                    ((e)=>{testFields[each].unit=e.target.value;console.log("woo",testFields)}));*/
+
                 break;
             default:
+                console.log("switch default")
                 return  <One2One className="fieldBox" sesarValues={value}
                                  userFields={userFields} userFelds={userFelds}
-                                 format={value.fieldFormat} callback={callBack}
-                                />;
-
+                                 format={value.fieldFormat} callback={callBack}/>;
         }
     }
 
+    changeFormat(e){
+        console.log("WHART:",this.props.sesarValues.sesarField)
+        this.props.changeFormat(e,this.props.sesarValues.sesarField)}
     render() {
-        console.log("special props:",this.props);
+
 
         return(
             <div>
-                {this.switchStatement}
+
+                <h3>{this.props.sesarValues.sesarField}</h3>
+
+                {this.switchStatement()}
 
             <form><fieldset>
             <legend>Format:</legend>
-            <input type="radio" name="fieldFormat" value="one2one" onClick={(e) =>this.props.changeFormat(e,this.props.sesarValues.sesarName)} checked />One2One
-            <input type="radio" name="fieldFormat" value="multi2one" onClick={(e) =>this.props.changeFormat(e,this.props.sesarValues.sesarName)}/>Multi2One
-            <input type="radio" name="fieldFormat" value="conversion" onClick={(e) =>this.props.changeFormat(e,this.props.sesarValues.sesarName)}/>UnitConversion
-            <input type="radio" name="fieldFormat" value="dateFormat" onClick={(e) =>this.props.changeFormat(e,this.props.sesarValues.sesarName)}/>DateFormat
-        </fieldset></form>
+            <input type="radio" name="fieldFormat" value="one2one" onClick={(e) =>(this.changeFormat(e))} checked />One2One
+            <input type="radio" name="fieldFormat" value="multi2one" onClick={(e) =>(this.changeFormat(e))}/>Multi2One
+            <input type="radio" name="fieldFormat" value="conversion" onClick={(e) =>(this.changeFormat(e))}/>UnitConversion
+            <input type="radio" name="fieldFormat" value="dateFormat" onClick={(e) =>(this.changeFormat(e))}/>DateFormat
+            </fieldset></form>
+
             </div>)
                 }
 }
