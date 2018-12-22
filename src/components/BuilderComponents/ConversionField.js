@@ -14,7 +14,7 @@ class ConversionField extends Component {
     displayExample(){
         if(this.state.field&&this.state.field.length >0) {
             return (
-                this.props.sesarValues.sesarName+ " : " + "["+this.state.field.toString()+"]"
+                this.props.sesarValues.sesarField+ " : " + "["+this.state.field.toString()+"]"
             )}
         else return ""
     }
@@ -42,7 +42,7 @@ class ConversionField extends Component {
     render() { //console.log("CONVERS",this.props)
         return (
             <div className="fieldBox" >
-                    <span><h3>{this.props.sesarValues.sesarName}</h3>
+                    <span><h3>{this.props.sesarValues.sesarField}</h3>
                     <h5 style={{fontStyle:"italic",color:"grey"}}>{this.displayExample()}</h5>
                     </span>
                 <select className="form-control" id="sel2" name="sellist2" onChange={this.setField}>
@@ -55,7 +55,7 @@ class ConversionField extends Component {
                         <input type="radio" name="measure_unit" value="mm" onClick={this.setUnit}/>MM
                     </fieldset>
                 </form>
-                <button onClick={()=>this.props.callback(this.state,this.props.sesarValues.sesarName, this.props.format)} >Make it so</button>
+                <button onClick={()=>this.props.callback(this.state,this.props.sesarValues.sesarField, this.props.format)} >Make it so</button>
 
             </div>
         );

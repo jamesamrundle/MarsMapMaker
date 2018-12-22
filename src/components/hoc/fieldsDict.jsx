@@ -1,480 +1,137 @@
-var fieldsDict = {
-
-
-    user_code: {
-        message: "(ATOMATIC) SESAR user code"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    sample_type: {
-        message: "The type of sample which comes from a SESAR controlled list"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    name: {
-        message: "The Name of the sample."  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    material: {
-        message: "The material of the sample which comes from a SESAR controlled list"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    igsn: {
-        message: "(AUTOMATIC) The 9-digit IGSN of the sample"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    parent_igsn: {
-        message: "The IGSN of the parent of the current sample"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    is_private: {
-        message: "Value should be 1 for private and 0 or null for public"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    publish_date: {
-        message: "Date on which sample set to public is available for global search and display YYYY-MM-DD"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    classification: {
-        message: "Classification"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    classification_comment: {
-        message: "Comment about classification"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    field_name: {
-        message: "Taxonomy"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    description: {
-        message: "Free text to describe features of a sample such as its components"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    age_min: {
-        message: "Numerical value for the minimum age of a sample"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    age_max: {
-        message: "Numerical value for the maximum age of a sample"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    age_unit: {
-        message: "Unit for the age provided"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    geological_age: {
-        message: "Age of a sample as described by the stratigraphic era"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    geological_unit: {
-        message: "A body of rock established as a distinct entity in the classification of Earth's rocks"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    collection_method: {
-        message: "Method by which the sample was collected"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    collection_method_descr: {
-        message: "Additional information about the collection Method"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    size: {
-        message: "Size of the registered object"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    size_unit: {
-        message: "Unit for the numerical value provided for 'size'"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    sample_comment: {
-        message: "Any free text comment about the sample"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    purpose: {
-        message: "The purpose for collecting the sample. e.g. paleomagnetism"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    latitude: {
-        message: "Latitude of the location where the sample was collected. (Start latitude for linear sampling features)"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    longitude: {
-        message: "Longitude of the location where the sample was collected. (Start longitude for linear sampling features)"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    latitude_end: {
-        message: "End latitude of the location where the sample was collected (WGS84)"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    longitude_end: {
-        message: "End longitude of the location where the sample was collected (WGS84)"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    elevation: {
-        message: "Elevation at which a sample was collected (in meters). Use negative values for depth below sea level"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    elevation_end: {
-        message: "End elevation at which a sample was collected"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    elevation_unit: {
-        message: "Unit for the elevation provided. e.g. Meters"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    vertical_datum: {
-        message: "Surface of zero elevation to which heights of various points are referred e.g. NAVD88"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    northing: {
-        message: "UTM northing (m): a number between 0 and 10"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    easting: {
-        message: "UTM easting (m): a number between 0 and 834"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    zone: {
-        message: "UTM zone"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    navigation_type: {
-        message: "Navigation type"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    primary_location_type: {
-        message: "Physiographic feature or type of feture that your sample was collected from"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    primary_location_name: {
-        message: "Name of physiographic feature or the name of the primary_location_type"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    location_description: {
-        message: "Free text description of the location_description"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    locality: {
-        message: "Name of the specific place where your sample was collected. This could be the name of a mine"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    locality_description: {
-        message: "Additional information about the specific place where your sample was collected"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    country: {
-        message: "Country where the sample was collected"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    privince: {
-        message: "State or Province where the sample was collected"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    county: {
-        message: "County where the sample was collected."  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    city: {
-        message: "City or Township where the sample was collected"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    cruise_field_prgrm: {
-        message: "Name or identifier of the field program during which the sample was collected."  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    platform_type: {
-        message: "Type of platform for the cruise. Suggested list."  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    platform_name: {
-        message: "Name of platform for cruise"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    platform_descr: {
-        message: "Description of the platform for the cruise"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    launch_platform_name: {
-        message: "Name of the launch platform that collected the sample"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    launch_id: {
-        message: "Further identifying information about the launch."  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    launch_type_name: {
-        message: "The type of launch used to collect the sample e.g. 'HOV'"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    collector: {
-        message: "Name of the person who collected the sample or name of chief scientist for larger field programs"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    collector_detail: {
-        message: "Institution"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    collection_start_date: {
-        message: "Date when the sample was collected. The format is YYYY-MM-DDTHH:MM:SSZ"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    collection_end_date: {
-        message: "Date when the sample collection was finished"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    collection_date_precision: {
-        message: "Precision to display the collection date and times"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    current_archive: {
-        message: "Name of institution"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    current_archive_contact: {
-        message: "Address and/or email of the person who should be contacted for information about the sample"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    original_archive: {
-        message: "Name of institution"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    original_archive_contact: {
-        message: "Address and/or email of the person who should be contacted for information about the sample's original archive"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    depth_min: {
-        message: "Minimum depth at which a sample was collected from its parent core"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    depth_max: {
-        message: "Maximum depth at which a sample was collected from its parent core"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    depth_scale: {
-        message: "Unit in which the depth is provided e.g. MBSF"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
-    sample_other_names: {
-        message: "Other names for the sample. Can be multiple"  ,
-        userValue: ""  ,
-        conversion: null ,
-    },
-
-
+import {FORMAT_CONV,FORMAT_DATE,FORMAT_M21,FORMAT_121} from "./Builder_Helpers"
+
+export var fieldsDict = {
+    "original_archive":{
+        "sesarField":"original_archive",
+        "message":"Name of institution",
+        "fieldFormat":FORMAT_121
+    },
+    "current archive":{
+        "sesarField":"current archive",
+        "fieldFormat":FORMAT_121
+    },
+    "platform_name":{
+        "sesarField":"platform_name",
+        "message":"Name of platform for cruise",
+        "fieldFormat":FORMAT_121
+    },
+    "cruise_field_prgrm":{
+        "sesarField":"cruise_field_prgrm",
+        "message":"Name or identifier of the field program during which the sample was collected.",
+        "fieldFormat":FORMAT_121
+    },
+    "name":{
+        "sesarField":"name",
+        "message":"The Name of the sample.",
+        "fieldFormat":FORMAT_121
+    },
+    "collection_method":{
+        "sesarField":"collection_method",
+        "message":"Method by which the sample was collected",
+        "fieldFormat":FORMAT_121
+    },
+    "collection_start_date":{
+        "sesarField":"collection_start_date",
+        "message":"Date when the sample was collected. The format is YYYY-MM-DDTHH:MM:SSZ",
+        "fieldFormat":FORMAT_DATE
+    },
+    "collection_end_date":{
+        "sesarField":"collection_end_date",
+        "message":"Date when the sample collection was finished",
+        "fieldFormat":FORMAT_DATE
+    },
+    "latitude":{
+        "sesarField":"latitude",
+        "message":"Latitude of the location where the sample was collected. (Start latitude for linear sampling features)",
+        "fieldFormat":FORMAT_121
+    },
+    "latitude_end":{
+        "sesarField":"latitude_end",
+        "message":"End latitude of the location where the sample was collected (WGS84)",
+        "fieldFormat":FORMAT_121
+    },
+    "longitude":{
+        "sesarField":"longitude",
+        "message":"Longitude of the location where the sample was collected. (Start longitude for linear sampling features)",
+        "fieldFormat":FORMAT_121
+    },
+    "longitude_end":{
+        "sesarField":"longitude_end",
+        "message":"End longitude of the location where the sample was collected (WGS84)",
+        "fieldFormat":FORMAT_121
+    },
+    "elevation":{
+        "sesarField":"elevation",
+        "message":"Elevation at which a sample was collected (in meters). Use negative values for depth below sea level",
+        "fieldFormat":FORMAT_121
+    },
+    "elevation_end":{
+        "sesarField":"elevation_end",
+        "message":"End elevation at which a sample was collected",
+        "fieldFormat":FORMAT_121
+    },
+    "size":{
+        "sesarField":"size",
+        "message":"Size of the registered object",
+        "fieldFormat":FORMAT_CONV
+    },
+    "size_unit CM IS COMMON":{
+        "sesarField":"size_unit CM IS COMMON",
+        "fieldFormat":FORMAT_CONV
+    },
+    "":{
+        "sesarField":"",
+        "fieldFormat":FORMAT_121
+    },
+    "collector":{
+        "sesarField":"collector",
+        "message":"Name of the person who collected the sample or name of chief scientist for larger field programs",
+        "fieldFormat":FORMAT_121
+    },
+    "primary_location_type":{
+        "sesarField":"primary_location_type",
+        "message":"Physiographic feature or type of feture that your sample was collected from",
+        "fieldFormat":FORMAT_121
+    },
+    "igsn":{
+        "sesarField":"igsn",
+        "message":"(AUTOMATIC) The 9-digit IGSN of the sample",
+        "fieldFormat":FORMAT_121
+    },
+    "sample_comment":{
+        "sesarField":"sample_comment",
+        "message":"Any free text comment about the sample",
+        "fieldFormat":FORMAT_121
+    },
+    "field_name KEYED LIST":{
+        "sesarField":"field_name KEYED LIST",
+        "fieldFormat":FORMAT_M21
+    },
+    "sample description":{
+        "sesarField":"sample description",
+        "fieldFormat":FORMAT_121
+    },
+    "geological_age":{
+        "sesarField":"geological_age",
+        "message":"Age of a sample as described by the stratigraphic era",
+        "fieldFormat":FORMAT_121
+    },
+    "age (min)MA":{
+        "sesarField":"age (min)MA",
+        "fieldFormat":FORMAT_121
+    },
+    "age (max)MA":{
+        "sesarField":"age (max)MA",
+        "fieldFormat":FORMAT_121
+    },
+    "classification":{
+        "sesarField":"classification",
+        "message":"Classification",
+        "fieldFormat":FORMAT_121
+    },
+    "sample_type":{
+        "sesarField":"sample_type",
+        "message":"The type of sample which comes from a SESAR controlled list",
+        "fieldFormat":FORMAT_121
+    }
 }
-const CM = "cm";
-const MM = "mm";
-//
-// var testdict = {
-//     description: {
-//         message: "Free text to describe features of a sample such as its components"  ,
-//         userValue: ""  ,
-//         conversion: null ,
-//     },
-//
-//     collection_start_date: { //where can i find the sesar api docs???
-//         message: "Date when the sample was collected. The format is YYYY-MM-DDTHH:MM:SSZ"  ,
-//         userValue: ""  ,
-//         conversion: null ,
-//     },
-//
-//     size: {
-//         message: "Size of the registered object"  ,
-//         userValue: ""  ,
-//         conversion: null ,
-//         units:[CM,MM],
-//         unitsDisplay:<div></div>,
-//         selectedUnit:null,
-//         unitMessage:"Please select the unit for measurement your institution uses.",
-//     },
-//
-// }
-export default fieldsDict;

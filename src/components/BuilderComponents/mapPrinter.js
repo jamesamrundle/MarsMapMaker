@@ -1,6 +1,8 @@
 
 import React from "react";
 
+
+
 export default function mapPrinter (mapValues){
     var one2oneMap = ( "let map = {\n")
 

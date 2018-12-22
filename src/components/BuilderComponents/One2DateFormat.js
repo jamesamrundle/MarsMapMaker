@@ -19,7 +19,7 @@ class One2DateFormat extends Component {
     displayExample(){
         if(this.state.field&&this.state.field.length >0) {
             return (
-                this.props.sesarValues.sesarName+ " : " + "["+this.state.field.toString()+"]"
+                this.props.sesarValues.sesarField+ " : " + "["+this.state.field.toString()+"]"
 
             )}
         else return ""
@@ -29,23 +29,24 @@ class One2DateFormat extends Component {
 
         var defined = (value) => " Ex : "+(value.exampleValue!=""?value.exampleValue:"undefined")
 
-        const allChoices = Object.entries(this.props.userFelds).map(
+        const allChoices =(
+        Object.entries(this.props.userFelds).map(
             ([key, value]) =>{
                 if (!value.disabled) return (
                     <option id={key}  >
                         {key+" "}+ {defined(value) } </option>)
                 else return (
                     <option   id={key} disabled={value.disabled} >
-                        {key+" "} +{defined(value)} </option>
-                )});
+                        {key+" "} {defined(value)} </option>
+                )}))
 
-        return allChoices;
+        return   [<option id="nothing">{"SELECT AN OPTION"}</option>].concat(allChoices)
     }
 
     render() {
         return (
             <div className="fieldBox" >
-                    <span className="col-sm-4"><h3>{this.props.sesarValues.sesarName}</h3>
+                    <span className="col-sm-4"><h3>{this.props.sesarValues.sesarField}</h3>
                     <h5 style={{fontStyle:"italic",color:"grey"}}>{this.displayExample()}</h5>
 
 
@@ -54,7 +55,7 @@ class One2DateFormat extends Component {
                     {/*{this.props.userFields.map(each => {return <option id={each} >{each}</option>})}*/}
                     {this.renderChoices()}
                 </select>
-                        <button  onClick={()=>this.props.callback(this.state,this.props.sesarValues.sesarName, this.props.format)} >Make it so</button>
+                        <button  onClick={()=>this.props.callback(this.state,this.props.sesarValues.sesarField, this.props.format)} >Make it so</button>
 
                     </span>
                 <DateFormatter  className="col-sm-8"></DateFormatter>

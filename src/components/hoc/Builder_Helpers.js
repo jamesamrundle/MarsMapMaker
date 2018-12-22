@@ -1,68 +1,46 @@
 import React from "react";
-import handleFieldSelect from "../MapBuilder"
-import renderOptions from "../MapBuilder"
+import * as d3 from "d3-dsv";
 
-export default function renderOne2One(each) {
-    console.log("121", each)
-    return (
-        <div>
-                    <span><h3>{each.sesarName}</h3>
 
-                    </span>
-            <select className="form-control" id="sel2" name="sellist2" on={handleFieldSelect}>
-                <renderOptions cat={"ham"}></renderOptions>
-            </select>
-        </div>
-    )
-}
+    export const FORMAT_M21 = "multi2one";
+    export const FORMAT_DATE = "dateFormat";
+    export const FORMAT_CONV = "conversion";
+    export const FORMAT_121 = "one2one";
 
-export function renderDateFormat(each) {
-    return (
-        <div>
-                    <span><h3>{each.sesarName}</h3>
+  export  async function readToText(file) {
 
-                    </span>
-            <select className="form-control" id="sel2" name="sellist2">
-                <this.renderOptions cat={"yes"}></this.renderOptions>
-            </select>
+        const temporaryFileReader = new FileReader();
 
-            <input defaultValue="COLLECTION START DATE"></input>
-        </div>
-    )
+        return new Promise((resolve, reject) => {
+            temporaryFileReader.onerror = () => {
+                temporaryFileReader.abort();
+                reject(new DOMException("Problem parsing input file."));
+            };
 
-}
+            temporaryFileReader.onload = () => {
+                resolve(temporaryFileReader.result);
+            };
+            temporaryFileReader.readAsText(file);
+        });
 
-export function rendermulti2One(each) {
-    console.log("multi", each)
-    return (
+    };
 
-        <div>
-                    <span><h3>{each.sesarName}</h3>
 
-                    </span>
-            <select multiple className="form-control" id="sel2" name="sellist2">
-                <this.renderOptions cat={"what"}></this.renderOptions>
-            </select>
-        </div>
-    )
-}
+   export async function fileTextToState(fileContents) {
+        var userFields = d3.csvParse(fileContents)
+        // console.log("CSV", userFields)//all data
+        // console.log("cols:", userFields.columns) //column names
+        // console.log("uf0", userFields[0]); //column,value of first inputs
+        var tempStateObject = {}
+        Object.keys(userFields[0]).map(each => {
 
-export function renderConversion(each) {
-    return (
-        <div>
-                    <span><h3>{each.sesarName}</h3>
-                    </span>
-            <select className="form-control" id="sel2" name="sellist2">
-                <this.renderOptions cat={"ok"}></this.renderOptions>
-            </select>
-            <form>
-                <fieldset>
-                    <legend>Your data is in:</legend>
-                    <input type="radio" name="measure_unit" value="cm"></input>CM
-                    <input type="radio" name="measure_unit" value="mm"></input>MM
-                </fieldset>
-            </form>
+                tempStateObject[each] = {
+                    disabled: false,
+                    exampleValue: userFields[0][each]
+                } //logs first value of field
+            }
+        )
+        return tempStateObject;
+    }//this.state.fields."each"
 
-        </div>
-    )
-}
+
