@@ -3,7 +3,7 @@ import ConversionField from "./ConversionField"
 import One2One from "./One2One"
 import One2DateFormat from "./One2DateFormat"
 import Multi2One from "./Multi2One"
-import {FORMAT_CONV,FORMAT_DATE,FORMAT_M21 ,FORMAT_121} from "./Builder_Helpers"
+import {FORMAT_CONV,FORMAT_DATE,FORMAT_M21 ,FORMAT_121} from "../hoc/Builder_Helpers"
 
 
 class RenderFormats extends Component {
