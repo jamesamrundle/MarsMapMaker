@@ -9,6 +9,7 @@ import  {fieldsDict}  from "./hoc/fieldsDict.jsx"
 import saveAs from 'file-saver';
 import mapPrinter from "./BuilderComponents/mapPrinter"
 import RenderFormats from "./BuilderComponents/RenderFormats"
+import XRenderFormats from "./BuilderComponents/XRenderFormats"
 
 var text = "original_archive,current archive,platform_name,cruise_field_prgrm,name,collection_method,collection_start_date,collection_end_date,latitude,latitude_end,longitude,longitude_end,elevation,elevation_end,size,size_unit CM IS COMMON,,collector,primary_location_type,igsn,,sample_comment,,field_name KEYED LIST,sample description,geological_age,age (min)MA,age (max)MA,sample_comment,classification,sample description,sample_type"
 
@@ -121,9 +122,9 @@ class MapBuilder extends Component {
         if (userFields.length > 0) {
             return Object.entries(this.state.fields).map(([each, value]) => { //each is the sesar field object
                // console.log("renderformats",value)
-                return <div> <RenderFormats sesarValues={{[each]:{name:each,...value}}} userField={{[each]:{name:each,...value}}}
-                               userFields={userFields} sesarFields={this.state.sesarFields} userFelds={this.state.fields}
-                                callback={callBack} changeFormat={changeFormat}/> </div>
+                return <div> <XRenderFormats  userField={{fieldName:each,...value}}
+                                sesarFields={this.state.sesarFields}
+                                format={null} callback={callBack} changeFormat={changeFormat}/> </div>
 
                 }
             )
