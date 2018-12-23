@@ -119,10 +119,10 @@ class MapBuilder extends Component {
 
         
         if (userFields.length > 0) {
-            return Object.entries(sesarFields).map(([each, value]) => { //each is the sesar field object
+            return Object.entries(this.state.fields).map(([each, value]) => { //each is the sesar field object
                // console.log("renderformats",value)
-                return <div> <RenderFormats sesarValues={value}
-                               userFields={userFields} userFelds={this.state.fields}
+                return <div> <RenderFormats sesarValues={{[each]:{name:each,...value}}} userField={{[each]:{name:each,...value}}}
+                               userFields={userFields} sesarFields={this.state.sesarFields} userFelds={this.state.fields}
                                 callback={callBack} changeFormat={changeFormat}/> </div>
 
                 }
