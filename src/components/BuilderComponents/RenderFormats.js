@@ -32,23 +32,23 @@ class RenderFormats extends Component {
         switch (this.state.format) {
 
             case FORMAT_DATE :                console.log("switch 12d")
-                return <One2DateFormat className="fieldBox" sesarValues={value}
+                return <p></p>/*<One2DateFormat className="fieldBox" sesarValues={value}
                                     userFields={userFields} userFelds={userFelds}
-                                    format={this.state.format} callback={callBack}/>
+                                    format={this.state.format} callback={callBack}/>*/
                 break;
 
             case FORMAT_M21 :
                 // console.log("switch m21")
-                return <Multi2One className="fieldBox" sesarValues={value}
+                return/* <Multi2One className="fieldBox" sesarValues={value}
                                   userFields={userFields}  userFelds={userFelds}
-                                  format={this.state.format} callback={callBack} />
+                                  format={this.state.format} callback={callBack} />*/
                 break;
 
             case FORMAT_CONV :
                 // console.log("switch conv")
-                return <ConversionField className="fieldBox" sesarValues={value}
+                return /*<ConversionField className="fieldBox" sesarValues={value}
                                         userFields={userFields} userFelds={userFelds}
-                                        format={this.state.format} callback={callBack} />
+                                        format={this.state.format} callback={callBack} />*/
                 break;
 
             default:
@@ -72,13 +72,13 @@ class RenderFormats extends Component {
 
                 {this.switchStatement()}
 
-            <form><fieldset>
-            <legend>Format:</legend>
-            <input type="radio" name="fieldFormat" value={FORMAT_121} onClick={(e) =>(this.changeFormat(e))} checked />One2One
-            <input type="radio" name="fieldFormat" value={FORMAT_M21} onClick={(e) =>(this.changeFormat(e))}/>Multi2One
-            <input type="radio" name="fieldFormat" value={FORMAT_CONV} onClick={(e) =>(this.changeFormat(e))}/>UnitConversion
-            <input type="radio" name="fieldFormat" value={FORMAT_DATE} onClick={(e) =>(this.changeFormat(e))}/>DateFormat
-            </fieldset></form>
+            {/*<form><fieldset>*/}
+            {/*<legend>Format:</legend>*/}
+            {/*<input type="radio" name="fieldFormat" value={FORMAT_121} onClick={(e) =>(this.changeFormat(e))} checked />One2One*/}
+            {/*<input type="radio" name="fieldFormat" value={FORMAT_M21} onClick={(e) =>(this.changeFormat(e))}/>Multi2One*/}
+            {/*<input type="radio" name="fieldFormat" value={FORMAT_CONV} onClick={(e) =>(this.changeFormat(e))}/>UnitConversion*/}
+            {/*<input type="radio" name="fieldFormat" value={FORMAT_DATE} onClick={(e) =>(this.changeFormat(e))}/>DateFormat*/}
+            {/*</fieldset></form>*/}
 
             </div>)
                 }

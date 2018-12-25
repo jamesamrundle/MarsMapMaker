@@ -1,137 +1,134 @@
 import {FORMAT_CONV,FORMAT_DATE,FORMAT_M21,FORMAT_121} from "./Builder_Helpers"
 
 export var fieldsDict = {
-    "original_archive":{
+    "original_archive":{ disabled:false,
         "sesarField":"original_archive",
         "message":"Name of institution",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "current archive":{
+    "current archive":{ disabled:false,
         "sesarField":"current archive",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "platform_name":{
+    "platform_name":{ disabled:false,
         "sesarField":"platform_name",
         "message":"Name of platform for cruise",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "cruise_field_prgrm":{
+    "cruise_field_prgrm":{ disabled:false,
         "sesarField":"cruise_field_prgrm",
         "message":"Name or identifier of the field program during which the sample was collected.",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "name":{
+    "name":{ disabled:false,
         "sesarField":"name",
         "message":"The Name of the sample.",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "collection_method":{
+    "collection_method":{ disabled:false,
         "sesarField":"collection_method",
         "message":"Method by which the sample was collected",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "collection_start_date":{
+    "collection_start_date":{ disabled:false,
         "sesarField":"collection_start_date",
         "message":"Date when the sample was collected. The format is YYYY-MM-DDTHH:MM:SSZ",
-        "fieldFormat":FORMAT_DATE
+        "format":FORMAT_DATE
     },
-    "collection_end_date":{
+    "collection_end_date":{ disabled:false,
         "sesarField":"collection_end_date",
         "message":"Date when the sample collection was finished",
-        "fieldFormat":FORMAT_DATE
+        "format":FORMAT_DATE
     },
-    "latitude":{
+    "latitude":{ disabled:false,
         "sesarField":"latitude",
         "message":"Latitude of the location where the sample was collected. (Start latitude for linear sampling features)",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "latitude_end":{
+    "latitude_end":{ disabled:false,
         "sesarField":"latitude_end",
         "message":"End latitude of the location where the sample was collected (WGS84)",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "longitude":{
+    "longitude":{ disabled:false,
         "sesarField":"longitude",
         "message":"Longitude of the location where the sample was collected. (Start longitude for linear sampling features)",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "longitude_end":{
+    "longitude_end":{ disabled:false,
         "sesarField":"longitude_end",
         "message":"End longitude of the location where the sample was collected (WGS84)",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "elevation":{
+    "elevation":{ disabled:false,
         "sesarField":"elevation",
         "message":"Elevation at which a sample was collected (in meters). Use negative values for depth below sea level",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "elevation_end":{
+    "elevation_end":{ disabled:false,
         "sesarField":"elevation_end",
         "message":"End elevation at which a sample was collected",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "size":{
+    "size":{ disabled:false,
         "sesarField":"size",
         "message":"Size of the registered object",
-        "fieldFormat":FORMAT_CONV
+        "format":FORMAT_CONV
     },
-    "size_unit CM IS COMMON":{
+    "size_unit CM IS COMMON":{ disabled:false,
         "sesarField":"size_unit CM IS COMMON",
-        "fieldFormat":FORMAT_CONV
+        "format":FORMAT_CONV
     },
-    "":{
-        "sesarField":"",
-        "fieldFormat":FORMAT_121
-    },
-    "collector":{
+
+    "collector":{ disabled:false,
         "sesarField":"collector",
         "message":"Name of the person who collected the sample or name of chief scientist for larger field programs",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "primary_location_type":{
+    "primary_location_type":{ disabled:false,
         "sesarField":"primary_location_type",
         "message":"Physiographic feature or type of feture that your sample was collected from",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "igsn":{
+    "igsn":{ disabled:false,
         "sesarField":"igsn",
         "message":"(AUTOMATIC) The 9-digit IGSN of the sample",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "sample_comment":{
+    "sample_comment":{ disabled:false,
         "sesarField":"sample_comment",
         "message":"Any free text comment about the sample",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "field_name KEYED LIST":{
+    "field_name KEYED LIST":{ disabled:false,
         "sesarField":"field_name KEYED LIST",
-        "fieldFormat":FORMAT_M21
+        "format":FORMAT_M21
     },
-    "sample description":{
+    "sample description":{ disabled:false,
         "sesarField":"sample description",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "geological_age":{
+    "geological_age":{ disabled:false,
         "sesarField":"geological_age",
         "message":"Age of a sample as described by the stratigraphic era",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "age (min)MA":{
+    "age (min)MA":{ disabled:false,
         "sesarField":"age (min)MA",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "age (max)MA":{
+    "age (max)MA":{ disabled:false,
         "sesarField":"age (max)MA",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "classification":{
+    "classification":{ disabled:false,
         "sesarField":"classification",
         "message":"Classification",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     },
-    "sample_type":{
+    "sample_type":{ disabled:false,
         "sesarField":"sample_type",
         "message":"The type of sample which comes from a SESAR controlled list",
-        "fieldFormat":FORMAT_121
+        "format":FORMAT_121
     }
 }

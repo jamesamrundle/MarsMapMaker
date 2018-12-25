@@ -82,23 +82,22 @@ class MapBuilder extends Component {
         var changeFormat=(e,sesarField)=> {
             var newFormat = e.target.value;
         
-            if (newFormat !== sesarFields[sesarField].fieldFormat) {
+            if (newFormat !== sesarFields[sesarField].format) {
+                var stateObject = sesarFields[sesarField];
+                stateObject.format = newFormat;
                 this.setState(preState => ({
                         sesarFields: {...sesarFields,
-                            [sesarField]: {sesarField: sesarField, fieldFormat: newFormat} }
+                            [sesarField]: stateObject }
                             
                             } ) )
             }
         }
 
-/*########adds to mapValues is dictionary of each sesar field to be added in format:
- ################################################################
- ##########sesarField:{userValues: , sesarField , fieldFormat}
-  ################################################################*/
-        var addToBeMapped= (sesarField,mappingValues,format)=>{
+
+        var addToBeMapped= (userField,mappingValues,format)=>{
             this.setState(preState => ({    mapValues: {
                                 ...this.state.mapValues,
-                                [sesarField]:{userValues:mappingValues,sesarField:sesarField,format:format}
+                                [mappingValues.selectedFields[0]]:{userValues:userField,sesarField:mappingValues.selectedFields[0],format:format}
                                 }
                                 }));// console.log("the set StatePiece",this.state)
         };
@@ -106,16 +105,18 @@ class MapBuilder extends Component {
 
         var ToggleDisable = (e) => {
             console.log("TD:",e)
-            var copy = {...this.state.fields};
-            (e.field).map(each =>{
+            var copy = {...this.state.sesarFields};
+            (e.selectedFields).map(each =>{
                 copy[each].disabled = !copy[each].disabled
         });
 
-        this.setState({fields:{...copy}})}
+        this.setState({sesarFields:{...copy}})
+        }
 
-        var callBack =(mappingValues,sesarField,format)=> { //on button click toggles disable for option and sets mapping variable
+        var callBack =(mappingValues,userField,format)=> { //on button click toggles disable for option and sets mapping variable
+            console.log("vallbacking",mappingValues,"uf",userField,"form",format)
             ToggleDisable(mappingValues);
-            addToBeMapped(sesarField,mappingValues,format)
+            addToBeMapped(userField,mappingValues,format)
         };
 
         

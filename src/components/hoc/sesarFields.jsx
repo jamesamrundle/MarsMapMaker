@@ -1,114 +1,114 @@
 export var bill = {
     "original_archive":{
     "sesarField":"original_archive",
-        "fieldFormat":null
+        "format":null
 },
     "current archive":{
     "sesarField":"current archive",
-        "fieldFormat":null
+        "format":null
 },
     "platform_name":{
     "sesarField":"platform_name",
-        "fieldFormat":null
+        "format":null
 },
     "cruise_field_prgrm":{
     "sesarField":"cruise_field_prgrm",
-        "fieldFormat":null
+        "format":null
 },
     "name":{
     "sesarField":"name",
-        "fieldFormat":null
+        "format":null
 },
     "collection_method":{
     "sesarField":"collection_method",
-        "fieldFormat":null
+        "format":null
 },
     "collection_start_date":{
     "sesarField":"collection_start_date",
-        "fieldFormat":null
+        "format":null
 },
     "collection_end_date":{
     "sesarField":"collection_end_date",
-        "fieldFormat":null
+        "format":null
 },
     "latitude":{
     "sesarField":"latitude",
-        "fieldFormat":null
+        "format":null
 },
     "latitude_end":{
     "sesarField":"latitude_end",
-        "fieldFormat":null
+        "format":null
 },
     "longitude":{
     "sesarField":"longitude",
-        "fieldFormat":null
+        "format":null
 },
     "longitude_end":{
     "sesarField":"longitude_end",
-        "fieldFormat":null
+        "format":null
 },
     "elevation":{
     "sesarField":"elevation",
-        "fieldFormat":null
+        "format":null
 },
     "elevation_end":{
     "sesarField":"elevation_end",
-        "fieldFormat":null
+        "format":null
 },
     "size":{
     "sesarField":"size",
-        "fieldFormat":null
+        "format":null
 },
     "size_unit CM IS COMMON":{
     "sesarField":"size_unit CM IS COMMON",
-        "fieldFormat":null
+        "format":null
 },
     "":{
     "sesarField":"",
-        "fieldFormat":null
+        "format":null
 },
     "collector":{
     "sesarField":"collector",
-        "fieldFormat":null
+        "format":null
 },
     "primary_location_type":{
     "sesarField":"primary_location_type",
-        "fieldFormat":null
+        "format":null
 },
     "igsn":{
     "sesarField":"igsn",
-        "fieldFormat":null
+        "format":null
 },
     "sample_comment":{
     "sesarField":"sample_comment",
-        "fieldFormat":null
+        "format":null
 },
     "field_name KEYED LIST":{
     "sesarField":"field_name KEYED LIST",
-        "fieldFormat":null
+        "format":null
 },
     "sample description":{
     "sesarField":"sample description",
-        "fieldFormat":null
+        "format":null
 },
     "geological_age":{
     "sesarField":"geological_age",
-        "fieldFormat":null
+        "format":null
 },
     "age (min)MA":{
     "sesarField":"age (min)MA",
-        "fieldFormat":null
+        "format":null
 },
     "age (max)MA":{
     "sesarField":"age (max)MA",
-        "fieldFormat":null
+        "format":null
 },
     "classification":{
     "sesarField":"classification",
-        "fieldFormat":null
+        "format":null
 },
     "sample_type":{
     "sesarField":"sample_type",
-        "fieldFormat":null
+        "format":null
 }
 }
