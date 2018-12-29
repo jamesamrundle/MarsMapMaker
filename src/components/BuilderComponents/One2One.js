@@ -14,13 +14,13 @@ class One2One extends Component {
 
 
     handleClick(e){
-       this.props.changeFormat(e,this.props.selectedFields[0]);
-       this.props.handleSelect(this.props.selectedFields[0])
+       this.props.changeFormat(e,this.props.selectedField);
+      this.props.handleSelect(this.props.selectedField)
     }
 
 
 
-    // renderChoices(){
+    // renderSesarFields(){
     //
     //     var defined = (value) => " Ex : "+(value.exampleValue!=""?value.exampleValue:"undefined")
     //
@@ -43,7 +43,7 @@ class One2One extends Component {
         return (
             <div className="fieldBox">
                 Map other values to this Field?
-                <button value={FORMAT_M21} onClick={(e)=>this.handleClick(e)} >Yes</button>
+                <button value={FORMAT_M21} onClick={this.handleClick} >Yes</button>
 
             </div>
 

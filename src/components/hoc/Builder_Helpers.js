@@ -44,3 +44,11 @@ import * as d3 from "d3-dsv";
     }//this.state.fields."each"
 
 
+// export function kallBack(sesarValues,userField,format){ //on button click toggles disable for option and sets mapping variable
+//     if(sesarValues.selectedField.length > 1) console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")
+//     console.log("vallbacking",sesarValues,"uf",userField,"form",format)
+//     // disableUserField(userField);
+//     this.disableSesarFields(sesarValues);
+//     this.addToBeMapped(userField,sesarValues,format)
+//     this.setUserField(userField,sesarValues);
+// };

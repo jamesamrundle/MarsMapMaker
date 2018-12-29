@@ -15,28 +15,28 @@ class XRenderFormats extends Component {
 
         console.log("in render formats")
         super(props);
-        this.state = {format: this.props.format}
-        this.switchStatement = this.switchStatement.bind(this);
+        this.state = {format: this.props.format, selectedField:null, disabledSelf:false}
+        this.formatSwitch = this.formatSwitch.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
     }
 
 
 
-    switchStatement() {
+    formatSwitch() {
 
-        var callBack = this.props.callback
+        var callBack = this.props.callBack
         var userField = this.props.userField
         var sesarFields = this.props.sesarFields
         var exampleValue = this.props.exampleValue
         // var changeFormat = this.props.changeFormat
 
-        //how to switch rendering?
+
 
         switch (this.state.format) {
 
             case FORMAT_121 :
                 console.log("switch 121")
-                return <One2One selectedFields={this.state.selectedFields} changeFormat={this.props.changeFormat} handleSelect={this.handleSelect}/>
+                return <One2One selectedField={this.state.selectedField} changeFormat={this.props.changeFormat} handleSelect={this.handleSelect}/>
                 break;
 
             case FORMAT_DATE :
@@ -46,7 +46,9 @@ class XRenderFormats extends Component {
 
             case FORMAT_M21 :
                 // console.log("switch m21")
-                return "m2o"
+                //return "m2o"
+                return <Multi2One selectedField={this.state.selectedField} allUserFields={this.props.allUserFields}
+                                  decouple={this.props.decouple} callBack={this.props.multiCallBack} originField={userField.fieldName} />
                 break;
 
             case FORMAT_CONV :
@@ -63,63 +65,62 @@ class XRenderFormats extends Component {
         }
     }
 
-    handleSelect(e){
-        var val = (e.target != null)? e.target.value : e;
-        console.log("eeeeeeeeeeeeeeeeee",e)
-        //console.log("val",this.props.sesarFields[val])
-        //callback(this.state,this.props.sesarValues.sesarField, this.props.format)}
-        var stateObj = {format:this.props.sesarFields[val].format,  selectedFields:[val] }
+    /*in order to make this function as confusing as possible, it handles default event action in this component
+    for selecting initial sesar field, as well as updating state:format,
+    when user decides to map multiple user fields to one sesarField by passing the field .*/
+    handleSelect(event){
+        var val = (event.target != null)? event.target.value : event;
+        var isProperEvent = (event.target != null);
 
- this.setState(stateObj,
- () => this.props.callback(this.state,this.props.userField.fieldName,this.state.format) )
+        var stateObj = {format:this.props.sesarFields[val].format,  selectedField:val ,disabledSelf:(val!== "NULL")}
+
+        this.setState(stateObj,
+            () => {if(isProperEvent)
+                this.props.callBack(this.state,this.props.userField.fieldName,this.state.format) } )
     }
 
+   // handleFormatToMulti(e,sesarField){ this.props.handleFormatToMulti(e,sesarField)}
 
-
-    renderChoices(){
+    renderSesarFields(){
         const allChoices = Object.entries(this.props.sesarFields).map(
             ([key, value]) =>{
-                if (!value.disabled) return (
-                    <option className="tooltip" title={value.message} id={key}  >
-                        {key}
-                       </option>
+                if (!value.mappedTo == null || value.mappedTo === this.props.userField.fieldName) return (
+                    <option className="tooltip" title={value.message} id={key} > {key} </option>
                     )
                 else return (
-                    <option  className="tooltip" id={key}  disabled={value.disabled} >
-                        {key}
-                       </option>
-                )});
+                    <option  className="tooltip" id={key}  disabled={value.disabled} > {key} </option>
+                )
+            });
 
-        return [<option id="nothing">{"SELECT SESAR FIELD"}</option>].concat(allChoices);
+        return [<option id="nothing" value={"NULL"}>{"SELECT SESAR FIELD"}</option>].concat(allChoices);
     }
 
 
-    changeFormat(e) {
-        // console.log("WHART:",this.props.sesarValues.sesarField)
-        this.props.changeFormat(e, this.props.sesarValues.sesarField)
-    }
+    changeFormat(e) { this.props.changeFormat(e, this.props.sesarValues.sesarField) }
 
-    isCurrentFormat(buttonFormat){
-        return (this.state.format === buttonFormat)? "checked" : ""
-    }
+    isCurrentFormat(buttonFormat){ return (this.state.format === buttonFormat)? "checked" : "" }
+
+    isDisabled(){return (this.props.userField.disabled && !this.state.disabledSelf)?  true: false}
 
     render() {
         return(
-            <div>
-                {this.switchStatement()}
+            <div >
+                {this.formatSwitch()}
 
                 <h3>{this.props.userField.fieldName}</h3>
+
                 <div className="fieldBox">
-                    <span><h3></h3>
+                    <span>
                     <h5 style={{fontStyle:"italic",color:"grey"}}>{this.props.userField.exampleValue}</h5>
                     </span>
 
                     {JSON.stringify( this.props.userField)}
-                    <select className="form-control" id="sel2" name="sellist2"
-                            onChange={this.handleSelect}>
 
-                        {this.renderChoices()}
+                    <select className="form-control" id="sel2" name="sellist2"
+                            disabled={this.isDisabled()} onChange={this.handleSelect} >
+                        {this.renderSesarFields()}
                     </select>
+
                 </div>
 
 
