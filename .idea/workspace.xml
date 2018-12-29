@@ -47,7 +47,7 @@
         <counts>
           <entry key="css" value="135" />
           <entry key="html" value="6" />
-          <entry key="js" value="18149" />
+          <entry key="js" value="18154" />
           <entry key="json" value="3" />
           <entry key="jsx" value="77" />
         </counts>
@@ -58,7 +58,7 @@
           <entry key="HTML" value="6" />
           <entry key="JSON" value="3" />
           <entry key="JSX Harmony" value="77" />
-          <entry key="JavaScript" value="17302" />
+          <entry key="JavaScript" value="17307" />
           <entry key="Scratch" value="847" />
         </counts>
       </usages-collector>
@@ -96,11 +96,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/BuilderComponents/Multi2One.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="261">
-              <caret line="60" column="46" lean-forward="true" selection-start-line="60" selection-start-column="46" selection-end-line="60" selection-end-column="46" />
+            <state relative-caret-position="132">
+              <caret line="108" selection-start-line="108" selection-end-line="108" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -108,7 +108,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/BuilderComponents/XRenderFormats.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="508">
@@ -241,8 +241,8 @@
         <option value="$PROJECT_DIR$/src/components/css/details.css" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.js" />
         <option value="$PROJECT_DIR$/src/components/BuilderComponents/XRenderFormats.js" />
-        <option value="$PROJECT_DIR$/src/components/BuilderComponents/Multi2One.js" />
         <option value="$PROJECT_DIR$/src/components/MapBuilder.js" />
+        <option value="$PROJECT_DIR$/src/components/BuilderComponents/Multi2One.js" />
       </list>
     </option>
   </component>
@@ -379,22 +379,21 @@
       <workItem from="1545529152828" duration="1992000" />
       <workItem from="1545613168361" duration="14196000" />
       <workItem from="1545761347571" duration="41310000" />
-      <workItem from="1546016675116" duration="30606000" />
+      <workItem from="1546016675116" duration="31004000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="168243000" />
+    <option name="totallyTimeSpent" value="168641000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1360" height="741" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info id="npm" order="1" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="2" weight="0.22080839" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="0" weight="0.32954547" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="0" visible="true" weight="0.32954547" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="2" show_stripe_button="false" />
       <window_info anchor="bottom" id="Docker" order="3" show_stripe_button="false" />
@@ -623,16 +622,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/BuilderComponents/Multi2One.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="60" column="46" lean-forward="true" selection-start-line="60" selection-start-column="46" selection-end-line="60" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/BuilderComponents/One2One.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -648,6 +637,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="508">
           <caret line="54" column="45" lean-forward="true" selection-start-line="54" selection-start-column="45" selection-end-line="54" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/BuilderComponents/Multi2One.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="108" selection-start-line="108" selection-end-line="108" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
