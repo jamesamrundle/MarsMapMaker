@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
-import fieldsDict from "./hoc/fieldsDict"
+import {readToText} from "./BuilderComponents/Helpers/FileHelpers"
+import {fileTextToState} from "./BuilderComponents/Helpers/FileHelpers"
 import './css/MapBuilder.css'
-import * as d3 from "d3-dsv"
-import ConversionField from "./BuilderComponents/ConversionField"
-import One2One from "./BuilderComponents/One2One"
-import One2DateFormat from "./BuilderComponents/One2DateFormat"
-import Multi2One from "./BuilderComponents/Multi2One"
+import  {fieldsDict}  from "./BuilderComponents/Helpers/fieldsDict.jsx"
+
+
 import saveAs from 'file-saver';
-import mapPrinter from "./BuilderComponents/mapPrinter"
+import mapPrinter from "./BuilderComponents/Main/mapPrinter"
+import XRenderFormats from "./BuilderComponents/Main/XRenderFormats"
+import {kallBack,FORMAT_M21,FORMAT_121} from "./BuilderComponents/Helpers/FileHelpers";
+import DefaultInfo from "./BuilderComponents/Main/DefaultInfo";
+import Multi2One from "./BuilderComponents/Multi2One";
 
 var text = "original_archive,current archive,platform_name,cruise_field_prgrm,name,collection_method,collection_start_date,collection_end_date,latitude,latitude_end,longitude,longitude_end,elevation,elevation_end,size,size_unit CM IS COMMON,,collector,primary_location_type,igsn,,sample_comment,,field_name KEYED LIST,sample description,geological_age,age (min)MA,age (max)MA,sample_comment,classification,sample description,sample_type"
 
@@ -21,206 +24,335 @@ class MapBuilder extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            file: [], fields: {}, mapValues:{},
+            file: [], fields: {}, mapValues: {}, sesarFields:fieldsDict,
         }
 
-        this.handleFileUpload = this.handleFileUpload.bind(this)
-        this.readToCSV = this.readToCSV.bind(this)
-        this.renderOptions = this.renderOptions.bind(this)
-        // this.getIt=this.getIt.bind(this)
-        this.handleClick = this.handleClick.bind(this)
-        this.renderfields = this.renderfields.bind(this);
-        this.makeMapFile = this.makeMapFile.bind(this);
+        // this.handleFileUpload = this.handleFileUpload.bind(this)
+        // this.renderfields = this.renderfields.bind(this);
+        // this.makeMapFile = this.makeMapFile.bind(this);
+        // // this.decoupleOldUserFieldsMapValues = this.decoupleOldUserFieldsMapValues.bind(this)
+        // this.addToBeMapped = this.addToBeMapped.bind(this);
+        // this.setUserField = this.setUserField.bind(this);
+        // // this.disableUserField = this.disableUserField.bind(this);
+        // this.disableSesarField = this.disableSesarField.bind(this);
+        // this.changeFormat = this.changeFormat.bind(this);
+        // this.setDateFormatting=this.setDateFormatting.bind(this);
     }
 
 
-
-    async handleFileUpload(e) {
-        console.log("e", e)
-        this.setState({cat: ["whatthefuck"]})
+        handleFileUpload= async (e) =>{
+        //console.log("e", e)
         await this.setState({file: e[0]})
-        console.log("state: ", this.state.file)
-        //this.readToCSV(this.state.file
-        const fileContents = await this.readToText(this.state.file)
-        console.log("fc:", fileContents);
-        await this.readToCSV(fileContents)
+        //console.log("state: ", this.state.file)
+
+        const fileContents = await readToText(this.state.file)
+        // console.log("fc:", fileContents);
+
+
+        this.setState({fields:await fileTextToState(fileContents)})
+
     }
 
-    async readToText(file) {
 
-        const temporaryFileReader = new FileReader();
 
-        return new Promise((resolve, reject) => {
-            temporaryFileReader.onerror = () => {
-                temporaryFileReader.abort();
-                reject(new DOMException("Problem parsing input file."));
+
+
+
+    decoupleOldUserFieldsMapValues=(oldUserFields,currentMapping)=>{
+        var editedCurrentMapping=  currentMapping ;
+        var temp = []
+        console.log("uf",oldUserFields)
+        console.log("curr",currentMapping)
+        if(typeof editedCurrentMapping.userValues != "string") {
+            for (var each of editedCurrentMapping.userValues) {
+                console.log(each)
+                if (oldUserFields.indexOf(each) < 0)
+                    temp.push(each)
+            }
+        }else {
+            if(oldUserFields.indexOf(currentMapping.userValues) < 0)
+                temp.push(currentMapping.userValues)
+        }
+
+        console.log("decoupled",oldUserFields,"now ",temp)
+        return {...editedCurrentMapping, userValues:temp}
+
+    }
+
+
+    // disableUserField=(userField)=>{
+    //     console.log("disuser field", userField)
+    //     if(typeof userField === "string") {
+    //         var copy = this.state.fields[userField];
+    //         copy.disabled = true;
+    //         this.setState(preState => ({
+    //             fields: {
+    //                 ...this.state.fields,
+    //                 userField: copy
+    //             }
+    //         }))
+    //         return
+    //     } else {
+    //         console.log("disuser ruhroh")
+    //         var copy = {...this.state.fields};
+    //         (userField).map(each => {
+    //             copy[each].disabled = !copy[each].disabled
+    //         });
+    //         this.setState({fields:{...copy}})
+    //     }
+    // }
+
+    enableUserField=(oldUserField,newFields)=>{
+        console.log("enable field", oldUserField)
+
+        var temp= newFields
+
+        if(typeof oldUserField === "string") {
+            temp[oldUserField].disabled = false;
+            delete temp[oldUserField].mappedTo;
+
+        } else {
+            console.log("ensuser ruhroh")
+            for (var each of oldUserField){
+                temp[each].disabled = false;
+                delete temp[each].mappedTo
             };
 
-            temporaryFileReader.onload = () => {
-                resolve(temporaryFileReader.result);
-            };
-            temporaryFileReader.readAsText(file);
-        });
+        }
+        return temp;
+    }
 
+
+    disableSesarField=(e)=>{
+        console.log("TD:", e)
+            var temp = {...this.state.sesarFields};
+        if(e.selectedField) {
+            temp[e.selectedField].disabled = true
+        }
+            return temp;
+
+    }
+
+    enableSesarField=(oldField,sesarFields)=>{
+        var temp = sesarFields;
+        temp[oldField].disabled = false;
+
+        if(temp[oldField].format === FORMAT_M21){
+            temp[oldField].format = FORMAT_121;
+        }
+
+        temp[oldField].disabled = false;
+        return temp;
+    }
+
+    addToBeMapped=(userField,sesarValues,format)=>{
+
+        if(sesarValues.selectedField!== null) {
+            var temp = {};
+            console.log("mapdebug", this.state.mapValues[sesarValues.selectedField])
+            if (!this.state.mapValues[sesarValues.selectedField]) {
+
+                temp.userValues = [userField];
+                temp.sesarField = sesarValues.selectedField;
+                temp.format = format;
+            }
+            // console.log("the set StatePiece",this.state)
+
+            else {
+                temp = this.state.mapValues[sesarValues.selectedField];
+                console.log("dastemp", temp)
+                for (var each of userField) {
+                    if (temp.userValues.indexOf(each) < 0)
+                        temp.userValues = temp.userValues.concat(each);
+                }
+
+                temp.sesarField = sesarValues.selectedField;
+                temp.format = format;
+            }
+
+            console.log("returning state", {...this.state.mapValues}, "temp:", temp)
+            return {...this.state.mapValues, [sesarValues.selectedField]: temp};
+        }
+        else return {...this.state.mapValues}
     };
 
 
-    async readToCSV(file) {
-        var userFields = d3.csvParse(file)
-        console.log("CSV", userFields)
-        console.log("cols:", userFields.columns)
-        console.log("uf0", userFields[0])
-        Object.keys(userFields[0]).map(each => this.setState({
-            fields:
-                {
-                    ...this.state.fields,
-                    [each]:
-                        {disabled: false}
+
+    /*sets userFields with property mappedTo which is the sesarField it is mapped to
+*   usefull for handeling reselection and validating if a particular option field should have access to reassign its mapped values*/
+        setUserField=(userField, sesarValues)=>{
+        console.log("set user field", userField, "set mappval", sesarValues);
+
+        var temp = {...this.state.fields} //(this.state.fields[each].mappedTo != null) ? (this.state.fields[userField].mappedTo) : [];
+
+
+        if (typeof userField != "string") {
+            for (var each of userField) {
+
+                if (sesarValues) {
+                    temp[each].mappedTo = sesarValues.selectedField;
+                    temp[each].disabled = true;
                 }
-        }))//this.state.fields."each"
 
-    }
+                else {
+                    temp[each].disabled = !temp[each].disabled;
+                    delete temp[each].mappedTo;
+                }
+            }
+        }
+        else {//is string
+            if(sesarValues){
+                temp[userField].mappedTo = sesarValues.selectedField;
+                temp[userField].disabled = true;}
+            else {
+                temp[userField].disabled = ! temp[userField].disabled;
+                delete temp[userField].mappedTo  ;}
+        }
 
-
-    renderOptions = (props)=> { //all the field options from uploaded csv
-        var userFields = Object.keys(this.state.fields)
-        console.log("Props",props)
-        if (userFields) {
-            return userFields.map(each => {
-
-                var d = this.state.fields[each].disabled
-
-                return <option id={each} onClick={this.handleClick} disabled={d}>{each}</option>
-            })
-        } else return ""
-    }
-
-
-
-    handleClick = (e) => {
-        var x = e.target.id
-        console.log("...", e)
-
-        this.setState(preState => ({
-            fields: {
-                ...this.state.fields,
-                [x]: {disabled: !preState.fields[x].disabled}
-            },
-        }));
-
-        // !this.state.fields[x].disabled ?
-        //     cat[x].disabled = true : cat[x].disabled = false
-        //
-        //     this.setState({fields:cat})
-
+        return temp;
     }
 
 
 
-    renderfields() {
-        var userFields = Object.keys(this.state.fields)
-        var testFields = {name: {sesarName: "name", fieldFormat: "one2one", userValues: null},
-            collection_start_date: {sesarName: "collection_start_date", fieldFormat: "dateFormat", userValues: null},
-            size: {sesarName: "size", fieldFormat: "conversion", userValues: null},
-            sample_description: {sesarName: "sample_description", fieldFormat: "multi2one", userValues: null}}
+    changeFormat=(e,sesarField)=>{
+        var sesarFields = this.state.sesarFields;
+        var newFormat = e.target.value;
 
-            var setStatePiece= (sesarName,mappingValues,format)=>{
+        if (newFormat !== sesarFields[sesarField].format) {
+            var stateObject = sesarFields[sesarField];
+            stateObject.format = newFormat;
             this.setState(preState => ({
-                mapValues: {
-                    ...this.state.mapValues,
-                    [sesarName]:{userValues:mappingValues,sesarName:sesarName,format:format}
-                }, /*state = {
-            file: [], fields: {}, mapValues:{},
-                mapFields{userValues:[], seSarName: , format: , extra: }*/
-            }));
-            console.log("set StatePiece",this.state)
+                sesarFields: {...sesarFields,
+                    [sesarField]: stateObject }
+
+            } ) )
+        }
+    }
+
+        currentMapValueFields=(oldVal)=>{return (this.state.mapValues[oldVal].userValues)};
+
+        removeMapValue = (oldVal,newMapValues)=>{
+            let temp = newMapValues;
+
+            delete temp[oldVal]
+            console.log("TEMP DELETE", temp)
+            return (temp)
+        };
+
+    renderfields=()=> {
+
+        var userFields = Object.keys(this.state.fields);
+
+
+        // var testFields = {name: {sesarName: "name", fieldFormat: "one2one", userValues: null},
+        //     collection_start_date: {sesarName: "collection_start_date", fieldFormat: "dateFormat", userValues: null},
+        //     size: {sesarName: "size", fieldFormat: "conversion", userValues: null},
+        //     sample_description: {sesarName: "sample_description", fieldFormat: "multi2one", userValues: null}}
+
+
+
+        let callBack =(sesarValues,userField,format,oldField)=> { //on button click toggles disable for option and sets mapping variable
+            console.log("kallbacking", sesarValues, "uf", userField, "form", format)
+            let newSesarFields = this.disableSesarField(sesarValues); //returns state.sesarFields
+            let newMapValues = this.addToBeMapped(userField, sesarValues, format); //returns state.mapValues
+            console.log("new map values",newMapValues)
+            let newFields = this.setUserField(userField, sesarValues); //returns state.fields
+
+            if(oldField !== null ) {
+                console.log("made it!")
+                let userFieldsToEnable = this.currentMapValueFields(oldField);
+                newFields = this.enableUserField(userFieldsToEnable,newFields);
+                newSesarFields = this.enableSesarField(oldField,newSesarFields);
+                newMapValues = this.removeMapValue(oldField,newMapValues);
+
             }
 
-        var callBack =(mappingValues,sesarName,format)=> { //change callback to use passed state
 
-            console.log("In callback, MV:", mappingValues,"\neach:", sesarName,"format: ",format)
-
-            setStatePiece(sesarName,mappingValues,format)
-        }
-
-            var updateAvailFields= (fields) =>{ //ON PAUSE TILL I GET MAPPING FINISHED
-                //need to modify so app passes field obj instead of keys. handle as keys in component
-            fields.map(field=>{
-                console.log("FIELD",fields)
-                this.setState(preState => ({
-                fields: {
-                    ...this.state.fields,[field]: {disabled: !preState.fields[field].disabled}
-
-                }
+            this.setState(preState => ({
+                fields: newFields,
+                sesarFields:  newSesarFields,
+                mapValues : newMapValues //{...preState.mapValues, [sesarValues.selectedField]: newMapValue}
             }))
-        })
+        };
+
+        var multiCallBack=(sesarValues,userField,format,oldValues)=> { //on button click toggles disable for option and sets mapping variable
+            console.log("kallbacking", sesarValues, "uf", userField, "form", format)
+
+            //sets mappedTo in new fields
+            let newFields = this.setUserField(userField, sesarValues); //returns state.fields
+            // adds new MapValues
+            let newMapValues = this.addToBeMapped(userField, sesarValues, format); //returns state.mapValues
+            //sets values no longer selected to not disabled and no mapped to
+            newFields = this.enableUserField(oldValues,newFields)
+            // removes oldvalues from MappingValues
+            newMapValues = this.decoupleOldUserFieldsMapValues(oldValues,newMapValues[sesarValues.selectedField])
+
+
+
+            this.setState(preState => ({
+                fields: newFields,
+                mapValues : {...preState.mapValues, [sesarValues.selectedField]: newMapValues}
+            }))
+        };
+
+        
+        if (userFields.length > 0) {
+            return Object.entries(this.state.fields).map(([each, value]) => { //each is the sesar field object
+               // console.log("renderformats",value)
+                return <div> <XRenderFormats
+                                key={"RF-"+each}
+                                userField={{fieldName:each,...value}}
+                                sesarFields={this.state.sesarFields}
+                                              allUserFields={this.state.fields} decouple={this.decoupleOldUserFieldsMapValues}
+                                 callBack={callBack} multiCallBack={multiCallBack} changeFormat={this.changeFormat}
+                                    addConversionValue={this.addConversionValue}
+                                    defaultUnit={this.state.mapValues.defaultUnit}/> </div>
+
+            } )
         }
-
-
-        if (userFields) {
-            return Object.entries(testFields).map(([each, value]) => { //each is the sesar field object
-
-                    switch (value.fieldFormat) {
-                        case "one2one":
-                            return  <One2One sesarValues={value} userFields={userFields} format={value.fieldFormat} callback={callBack} />;
-                            /*this.renderOne2One({...value},((e)=>{testFields[each].userValues=e.target.value;console.log(testFields)}));*/
-                            break;
-                        case "dateFormat":
-                            return  <One2DateFormat sesarValues={value} userFields={userFields} format={value.fieldFormat} callback={callBack}  />
-                            /*this.renderDateFormat({...value},((e)=>{testFields[each].userValues=e.target.value;console.log(testFields)}));*/
-                            break;
-                        case"multi2one":
-                           return <Multi2One sesarValues={value} userFields={userFields} format={value.fieldFormat} callback={callBack} updateFields={updateAvailFields} >WTF</Multi2One>
-
-                            // return this.rendermulti2One({...value},((e)=>{testFields[each].userValues=(Object.entries(e.target.selectedOptions).map(each=>{return each.id}));console.log(testFields)}));
-                            break;
-                        case "conversion":
-                            return <ConversionField sesarValues={value} userFields={userFields} format={value.fieldFormat}
-                                        updateFields={updateAvailFields} callback={callBack} />
-                            /*this.renderConversion({...value},((e)=>{testFields[each].userValues=(e.target.value);console.log(testFields)}),
-                                ((e)=>{testFields[each].unit=e.target.value;console.log("woo",testFields)}));*/
-                            break;
-                        default:
-                            return <div>Broked</div>
-                    }
-                }
-            )
-        }
-        return <div>:)</div>
+        return <div> >:)</div>
     }
 
-handleSelect(e){
+    setUnit=(e)=>{ let unit = e.target.value;
+        this.setState(preState => ({mapValues : {...preState.mapValues, defaultUnit : unit }}) )};
 
+    addConversionValue = (targetValue,extra ) => {
+        let temp = this.state.mapValues[targetValue]
 
-    console.log("handleselect", e.target.selectedOptions[0].id)
-    // var cat = Object.assign({}, this.state.fields)
-    //
-    // this.setState(preState => ({
-    //     fields: {
-    //         ...this.state.fields,
-    //         [x]: {disabled: !preState.fields[x].disabled}
-    //     }
-    // }));
+        if(extra){temp.extra = {field: extra.field , unit : extra.unit}}
+
+        this.setState(preState =>({mapValues : { ...preState.mapValues , [targetValue]: temp  } }))
     }
 
- makeMapFile(){
+/*############ Takes in state of generated mapValues and produces  .js map file*/
+ makeMapFile=()=>{
      var blob = new Blob([ mapPrinter(this.state.mapValues)], {type: "text/plain;charset=utf-8"});
      saveAs(blob, "testfile1.txt");
     ;
  }
+
+ setDateFormatting=(dateFormat)=>{this.setState(prevState =>({ mapValues : {...this.state.mapValues, userDateFormat:dateFormat}}))}
+
     render() {
+
+
+        console.log("STATE",this.state.sesarFields)
         return (
 
+            <div style={{margin:"20px","margin-top":"50px"}}>
 
-            <div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
+                <div>
+                    <DefaultInfo setDateFormatting={this.setDateFormatting}
+                                 userFields={this.state.fields}
+                                    setUnit={this.setUnit}/>
+
+                </div>
+                <div className="fileBtn">
                 fileinput
-                <input type="file" onChange={event => this.handleFileUpload(event.target.files)}></input>
-                {this.renderfields()}
+                <input type="file" onChange={event => this.handleFileUpload(event.target.files)}/>
+                </div>
+                    {this.renderfields()}
 
-                <div></div>
                 <button onClick={this.makeMapFile} > Create Map File</button>
             </div>
         )
