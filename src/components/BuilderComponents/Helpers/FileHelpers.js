@@ -6,6 +6,9 @@ import * as d3 from "d3-dsv";
     export const FORMAT_DATE = "dateFormat";
     export const FORMAT_CONV = "conversion";
     export const FORMAT_121 = "one2one";
+    export const CM = "cm";
+    export const MM = "mm";
+
 
   export  async function readToText(file) {
 

@@ -15,6 +15,8 @@ const size = (scrippsValue, scrippsKey) => {
   return scrippsKey == 'CORED_LENGTH_MM' ? scrippsValue/10 : scrippsValue
 }
 
+
+
 // creates a key value string from originalKey and new value
 const keyValueString = (scrippsValue, scrippsKey) => {
   return scrippsKey + ':' + scrippsValue

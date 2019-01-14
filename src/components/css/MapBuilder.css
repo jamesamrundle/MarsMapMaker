@@ -1,9 +1,38 @@
-.dateFormatter{
-    position: ;
+.fieldElement{
+    display:inline-block !important;
+    margin-left:20px;
+    margin-right:20px;
+    margin-bottom:20px;
+}
+.fieldContainer{
+
+    width: fit-content;
+    position:sticky;
+
+    border:1px solid #C4C4C4;
+    background-color:#F7F7F7;
+    padding:15px 20px;
+    border-radius:10px;
+    color:#333;
+    margin-bottom: 15px;
+}
+
+.fileBtn{
+    margin :20px;
+    width:100px;
 }
 
 .fieldBox{
     margin-bottom: 50px;
+}
+
+.subText{
+fontStyle:italics;
+    color:lightslategrey;
+}
+
+.inline{
+    display: inline;
 }
 
 #dateTxtBox
@@ -15,4 +44,3 @@
 #sel2{
     width:25ch;
 }
-

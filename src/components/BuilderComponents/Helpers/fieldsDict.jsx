@@ -1,4 +1,10 @@
-import {FORMAT_CONV,FORMAT_DATE,FORMAT_M21,FORMAT_121} from "./Builder_Helpers"
+import {FORMAT_CONV,FORMAT_DATE,FORMAT_M21,FORMAT_121} from "./FileHelpers"
+
+// var testFields = {name: {sesarName: "name", fieldFormat: "one2one", userValues: null},
+//     collection_start_date: {sesarName: "collection_start_date", fieldFormat: "dateFormat", userValues: null},
+//     size: {sesarName: "size", fieldFormat: "conversion", userValues: null},
+//     sample_description: {sesarName: "sample_description", fieldFormat: "multi2one", userValues: null}}
+
 
 export var fieldsDict = {
     "original_archive":{ disabled:false,

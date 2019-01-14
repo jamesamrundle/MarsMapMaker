@@ -17,21 +17,21 @@ export default function mapPrinter (mapValues){
         console.log("mapper map values", mapValues[each].userValues.field)
         switch (mapValues[each].format){
             case "one2one":
-                one2oneMap = one2oneMap.concat( " "+mapValues[each].sesarName+ ": \""+mapValues[each].userValues.field+"\",\n")
+                one2oneMap = one2oneMap.concat( " "+mapValues[each].sesarField+ ": \""+mapValues[each].userValues[0]+"\",\n")
                 break;
             case "dateFormat":
                 typeExist.dateFormat = true;
-                logicMap = logicMap.concat("  "+mapValues[each].sesarName+ ": scrippsDate,\n")
-                one2oneMap = one2oneMap.concat( " "+mapValues[each].sesarName+ ": \""+mapValues[each].userValues.field+"\",\n")
+                logicMap = logicMap.concat("  "+mapValues[each].sesarField+ ": scrippsDate,\n")
+                one2oneMap = one2oneMap.concat( " "+mapValues[each].sesarField+ ": \""+mapValues[each].userValues+"\",\n")
                 break;
             case"multi2one":
                 typeExist.multi2One = true;
-                combinationMap = combinationMap.concat("  "+mapValues[each].sesarName+ ": delimit,\n")
-                one2oneMap = one2oneMap.concat( " "+mapValues[each].sesarName+ ": \""+mapValues[each].userValues.field+"\",\n")
+                combinationMap = combinationMap.concat("  "+mapValues[each].sesarField+ ": delimit,\n")
+                one2oneMap = one2oneMap.concat( " "+mapValues[each].sesarField+ ": ["+mapValues[each].userValues.map(each =>{ return "\""+each+"\""})+"],\n")
                 break;
             case "conversion":
                 typeExist.conversion = true;
-                one2oneMap = one2oneMap.concat( " "+mapValues[each].sesarName+ ": \""+mapValues[each].userValues.field+"\",\n")
+                one2oneMap = one2oneMap.concat( " "+mapValues[each].sesarField+ ": [\""+mapValues[each].userValues+"\""+","+"\""+mapValues[each].extra.field +"\""+"],\n")
                 break;
             default:
                console.log("mapbuilding errrrrrrror!")
@@ -45,6 +45,10 @@ export default function mapPrinter (mapValues){
         "// ======================\n" +
         "\n" +
         dateFunction() +
+
+        "\n" +
+        "\n" +
+        sizeConversion() +
 
         "\n" +
         "// creates a key value string from originalKey and new value\n" +
