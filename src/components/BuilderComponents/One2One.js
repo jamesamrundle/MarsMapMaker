@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import "../css/MapBuilder.css"
-import One2DateFormat from "./One2DateFormat"
 import {FORMAT_M21 } from "./Helpers/FileHelpers"
+import {allowedMulti} from "./Helpers/renderSelectOptions"
 
 class One2One extends Component {
 
@@ -14,7 +14,7 @@ class One2One extends Component {
 
 
     render() {
-
+        if(allowedMulti.includes(this.props.selectedField))
         return (
             <div className="fieldBox">
                 Map other values to this Field?
@@ -22,7 +22,9 @@ class One2One extends Component {
 
             </div>
 
-        );}
+        );
+        else return "";
+    }
 
     }
 

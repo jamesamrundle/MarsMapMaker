@@ -10,7 +10,7 @@ import {toggledUserOptions} from "./Helpers/renderSelectOptions"
 class Multi2One extends Component {
     constructor(props) {
         super(props);
-        this.state={currentFields:null  }
+        this.state={currentFields:null }
     }
 
 

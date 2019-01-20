@@ -3,6 +3,8 @@
 import React from "react";
 import XRenderFormats from "../Main/XRenderFormats";
 
+export let allowedMulti = ["sample_comment","sample_description","field_name"];
+
 var defined = (value) => " Ex : "+(value.exampleValue!=""?value.exampleValue:"undefined")
 
 //from XRenderFormats
@@ -38,7 +40,8 @@ export let conversionUserOptions = allUserFields => Object.entries(allUserFields
 
 //from MultiToOne
 
-export let toggledUserOptions = (allUserFields, selectedField,originField) => Object.entries(allUserFields).map(
+export let toggledUserOptions = (allUserFields, selectedField,originField) =>
+    Object.entries(allUserFields).map(
     ([key, value]) =>{
         //if selected from other field
         if (!value.disabled)

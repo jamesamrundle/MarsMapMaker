@@ -81,17 +81,32 @@ class XRenderFormats extends Component {
         }
 
         else return(
-            <div className="fieldContainer" >
+            <div className="row">
+                <div className="col-lg-1"/>
+            <div className="card col-lg-10 " >
 
-                <span >
-                  <h3  className="inline">{this.props.userField.fieldName}</h3>
-                    <h5 className="subText inline"> Example from your data :{this.props.userField.exampleValue}</h5>
-                </span>
+                <div className="card-header" >
+                    <div className="col-lg-5">
+                  <h3 className="">{this.props.userField.fieldName}</h3>
+                    <dt className="subText "> &emsp;{this.props.userField.exampleValue}</dt>
+                    </div>
+                    <div className="col-lg-7">
+                        <h5 className="inline">Mapping your field(s)</h5>
+                            <h6 className="subText inline">{(this.state.extraUserFields != null)?
+                                this.props.userField.fieldName +" + "+JSON.stringify( this.state.extraUserFields):
+                                this.props.userField.fieldName} </h6>
+                            <br/>
+                            <h5>to SESAR field</h5>
+                            <h6 className="subText inline"> {this.state.selectedField} </h6>
 
-                <br/>
+                    </div>
+                </div>
 
-                <div className="fieldElement" >
 
+
+                <div className="card-body " >
+                    <dl><dt className="subText "> Example from your data :{this.props.userField.exampleValue}</dt>
+                    </dl>
                     <br/>
 
                     <h5 className="inline">Mapping your field(s)
@@ -127,6 +142,7 @@ class XRenderFormats extends Component {
                               defaultUnit={this.props.defaultUnit}/>
 
 
+            </div>
             </div>)
     }
 }

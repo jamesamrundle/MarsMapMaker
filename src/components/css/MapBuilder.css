@@ -6,8 +6,8 @@
 }
 .fieldContainer{
 
-    width: fit-content;
-    position:sticky;
+    /*width: fit-content;*/
+    position:center;
 
     border:1px solid #C4C4C4;
     background-color:#F7F7F7;
@@ -24,6 +24,11 @@
 
 .fieldBox{
     margin-bottom: 50px;
+}
+
+.card.col-lg-10{
+    padding-right:0px ;
+    padding-left: 0px;
 }
 
 .subText{

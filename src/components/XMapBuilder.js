@@ -82,7 +82,6 @@ class XMapBuilder extends Component {
     };
 
     multiCallBack=(sesarValues,userField,format,oldValues)=> { //on button click toggles disable for option and sets mapping variable
-        console.log("kallbacking", sesarValues, "uf", userField, "form", format)
 
         //sets mappedTo in new fields
         let newFields = setUserField(this.state.fields,userField, sesarValues); //returns state.fields
@@ -163,9 +162,10 @@ class XMapBuilder extends Component {
                 </div>
 
                 {this.renderfields()}
-
+                <div className="col-lg-1">
                 <button onClick={this.makeMapFile} > Create Map File</button>
-            </div>
+                </div>
+                </div>
         )
     }
 }

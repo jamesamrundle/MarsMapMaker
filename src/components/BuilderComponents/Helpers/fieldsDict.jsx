@@ -1,4 +1,5 @@
 import {FORMAT_CONV,FORMAT_DATE,FORMAT_M21,FORMAT_121} from "./FileHelpers"
+import Multi2One from "../Multi2One";
 
 // var testFields = {name: {sesarName: "name", fieldFormat: "one2one", userValues: null},
 //     collection_start_date: {sesarName: "collection_start_date", fieldFormat: "dateFormat", userValues: null},
@@ -106,9 +107,9 @@ export var fieldsDict = {
         "message":"Any free text comment about the sample",
         "format":FORMAT_121
     },
-    "field_name KEYED LIST":{ disabled:false,
+    "field_name":{ disabled:false,
         "sesarField":"field_name KEYED LIST",
-        "format":FORMAT_M21
+        "format":FORMAT_121
     },
     "sample description":{ disabled:false,
         "sesarField":"sample description",
