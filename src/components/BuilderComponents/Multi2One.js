@@ -72,33 +72,7 @@ class Multi2One extends Component {
 
 
 
-    renderOptions= () =>{
 
-
-       // console.log("M21 props",this.props)
-        var defined = (value) => " Ex : "+(value.exampleValue!=""?value.exampleValue:"undefined")
-
-        const allChoices = Object.entries(this.props.allUserFields).map(
-            ([key, value]) =>{
-                //if selected from other field
-                if (!value.disabled)
-                    return ( <option id={key} key={"UF" + key}  >
-                        {key+" "}+ {defined(value) } </option>);
-                //if selected by self
-                if(((value.disabled === true) && (value.mappedTo !== this.props.selectedField)) ||
-                    key === this.props.originField )
-                    return ( <option   id={key} key={"UF" + key}
-                                       disabled={value.disabled} >
-                        {key+" "} +{defined(value)} </option>);
-                //origin field
-                else
-                    return( <option   id={key} key={"UF" + key}
-                                      style={{color:"red"}} >
-                    {key+" "} +{defined(value)} </option>)
-            });
-
-        return allChoices;
-    }
 
     displayExample=()=>{
         if(this.state.currentFields&&this.state.currentFields.length >0) {
@@ -118,6 +92,7 @@ class Multi2One extends Component {
                         <h3>{this.props.selectedField}</h3>
                         <h5 className="subText">{this.displayExample()}</h5>
                     </span>
+
                 <select multiple className="form-control" id="sel2" name="sellist2" onChange={(e)=>this.handleSelects(e)}>
                     {toggledUserOptions(this.props.allUserFields,this.props.selectedField,this.props.originField)}
                     </select>

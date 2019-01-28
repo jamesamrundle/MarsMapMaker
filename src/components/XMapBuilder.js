@@ -8,7 +8,10 @@ import saveAs from 'file-saver';
 import mapPrinter from "./BuilderComponents/Main/mapPrinter"
 import XRenderFormats from "./BuilderComponents/Main/XRenderFormats"
 import DefaultInfo from "./BuilderComponents/Main/DefaultInfo";
+import legend from "../M3Legend.jpg"
+
 import {removeMapValue, setUserField, addToBeMapped, enableSesarField,disableSesarField,enableUserField,decoupleOldUserFieldsMapValues} from "./BuilderComponents/Helpers/CallBacks"
+import {LegendPopup} from "./LegendPopup";
 
 
 
@@ -122,8 +125,10 @@ class XMapBuilder extends Component {
         return <div> >:)</div>
     }
 
-    setUnit=(e)=>{ let unit = e.target.value;
-        this.setState(preState => ({mapValues : {...preState.mapValues, defaultUnit : unit }}) )};
+    setUnit=(e)=>{
+        let unit = e.target.value;
+        let newSesarFields = disableSesarField(this.state.sesarFields,{selectedField:"size_unit CM IS COMMON"})
+        this.setState(preState => ({mapValues : {...preState.mapValues, defaultUnit : unit },sesarFields:{...newSesarFields} }) )};
 
     addConversionValue = (targetValue,extra ) => {
         let temp = this.state.mapValues[targetValue]
@@ -150,19 +155,42 @@ class XMapBuilder extends Component {
 
             <div style={{margin:"20px","margin-top":"50px"}}>
 
-                <div>
+                <div className=" row ">
+
+                            <div className={"col-lg-4"} />
+
+                    File Input
+                    <div className={"col-lg-3"} >
+                        <input  type="file" onChange={event => this.handleFileUpload(event.target.files)}/>
+                    </div>
+
+                    <div className={"col-lg-1"}>
+                        <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#myModal">
+                            Help
+                        </button>
+                        <LegendPopup/>
+                    </div>
+
+                </div>
+
+                <div className={"row"}>
+                    <div className={"col-lg-3"} />
+                    <div className={"col-lg-9"}>
                     <DefaultInfo setDateFormatting={this.setDateFormatting}
                                  userFields={this.state.fields}
                                     setUnit={this.setUnit}/>
+                    </div>
+                </div>
 
-                </div>
-                <div className="fileBtn">
-                fileinput
-                <input type="file" onChange={event => this.handleFileUpload(event.target.files)}/>
-                </div>
+
+
+
+
+
+
 
                 {this.renderfields()}
-                <div className="col-lg-1">
+                <div className="">
                 <button onClick={this.makeMapFile} > Create Map File</button>
                 </div>
                 </div>

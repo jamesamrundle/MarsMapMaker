@@ -97,7 +97,7 @@ export let addToBeMapped=(statePiece,userField,sesarValues,format)=>{
 
     if(sesarValues.selectedField!== null) {
         var temp = {};
-        console.log("mapdebug", statePiece[sesarValues.selectedField])
+        console.log("mapdebug", statePiece)
         if (!statePiece[sesarValues.selectedField]) {
 
             temp.userValues = [userField];

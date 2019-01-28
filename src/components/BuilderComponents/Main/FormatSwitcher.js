@@ -16,7 +16,7 @@ export function FormatSwitch(props){
     case
         (FORMAT_121 || FORMAT_DATE)
     :
-        console.log("switch 121")
+        // console.log("switch 121")
         return <One2One selectedField={props.selectedField}
                         changeFormat={props.changeFormat}
                         handleSelect={props.handleSelect}/>
@@ -48,7 +48,7 @@ export function FormatSwitch(props){
         break;
 
     default:
-        console.log("switch default")
+        // console.log("switch default")
         return null
     }
 

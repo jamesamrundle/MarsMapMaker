@@ -10,9 +10,9 @@ import "../../css/MapBuilder.css"
 export let UnitFormatter = (props) =>{
 
     return(
-    <div className="fieldElement fieldContainer" >
+    <div className="inline subContainer" >
         <fieldset>
-            <legend>Default unit for your data:</legend>
+            <legend>Default Measurement Unit:</legend>
             <input type="radio" name="measure_unit" value={CM} onClick={props.setUnit}/>CM
             <input type="radio" name="measure_unit" value={MM} onClick={props.setUnit}/>MM
         </fieldset>

@@ -26,21 +26,18 @@ class DefaultInfo extends Component {
     renderDateFormatted= () =>{
         const {dateInput, exampleValue} = this.state;
 
+
+
         if(dateInput){
-            return(<div>
+            return(  <div>
+                <h4 > According to your mapping: </h4>
                <line>Year : {exampleValue.substring(dateInput.indexOf("Y"),dateInput.lastIndexOf("Y")+1)}</line>
                <line>Day : {exampleValue.substring(dateInput.indexOf("D"),dateInput.lastIndexOf("D")+1)}</line>
                <line>Month : {exampleValue.substring(dateInput.indexOf("M"),dateInput.lastIndexOf("M")+1)}</line>
                 </div>)
         }
-        else return(<div>
-                 <line>Below is example data pulled from your CSV</line>
-           <br/> <line>Replace digits representing Year with 'Y'</line>
-           <br/> <line>Replace digits representing Month with 'M'</line>
-           <br/> <line>Replace digits representing Day with 'D'</line>
-           <br/> <line>Replace every other character or whitespace with an X</line>
-           <br/> <line>Example: 2017-04-27 20:14EST to YYYYXMMXDDXXXXXXXXX</line>
-        </div>)
+        else return null;
+
     }
 
 
@@ -56,15 +53,24 @@ class DefaultInfo extends Component {
             <select className="form-control" id="sel2" name="sellist2" onChange={(e)=>this.setField(e)}>
                 {defaultInfoOptions(this.props.userFields)}
             </select>
+                {this.renderDateFormatted()}
         </div>)
         };
 
 
     renderInput =() =>{
+        const helpText =(<div className="verify">
+            <line>Below is example data pulled from your CSV</line>
+            <br/> <line>Replace digits representing Year with 'Y'</line>
+            <br/> <line>Replace digits representing Month with 'M'</line>
+            <br/> <line>Replace digits representing Day with 'D'</line>
+            <br/> <line>Replace every other character or whitespace with an X</line>
+            <br/> <line>Example: 2017-04-27 20:14EST to YYYYXMMXDDXXXXXXXXX</line>
+        </div>)
+
         if(this.state.exampleValue)
-        return (<div>
-            <h4 > According to your mapping: </h4>
-            {this.renderDateFormatted()}
+        return (<div className={"inline"}>
+                {helpText}
                 <input onChange={event => this.setState({dateInput: event.target.value})} id="dateTxtBox"
                       defaultValue={(this.state.exampleValue)?this.state.exampleValue: "SELECT FIELD"}
                         onBlur={()=>this.props.setDateFormatting(this.state.dateInput)}>
@@ -78,16 +84,15 @@ class DefaultInfo extends Component {
 
     if(Object.keys(this.props.userFields).length >0 && this.state.doRender ){
         return (
-            <div className="fieldElement">
-
-            <div className="fieldContainer fieldElement" >
-
-                <div ><h4 > Configure how to map your date format to that of SESAR </h4></div>
+            <div className="fieldContainer">
+                <div ><h3 className={"verify"} > Default Mapping Configuration </h3></div>
+            <div className="subContainer fieldElement" >
 
 
-                <this.RenderSelect  />
 
                 <div className="fieldElement">
+                    <h4 className={"verify"}>Configure Date Format</h4>
+                <this.RenderSelect  />
                     {this.renderInput()}
                 </div>
 

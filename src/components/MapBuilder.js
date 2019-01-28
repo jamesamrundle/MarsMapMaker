@@ -5,13 +5,12 @@ import {fileTextToState} from "./BuilderComponents/Helpers/FileHelpers"
 import './css/MapBuilder.css'
 import  {fieldsDict}  from "./BuilderComponents/Helpers/fieldsDict.jsx"
 
-
 import saveAs from 'file-saver';
 import mapPrinter from "./BuilderComponents/Main/mapPrinter"
 import XRenderFormats from "./BuilderComponents/Main/XRenderFormats"
 import {kallBack,FORMAT_M21,FORMAT_121} from "./BuilderComponents/Helpers/FileHelpers";
 import DefaultInfo from "./BuilderComponents/Main/DefaultInfo";
-import Multi2One from "./BuilderComponents/Multi2One";
+
 
 var text = "original_archive,current archive,platform_name,cruise_field_prgrm,name,collection_method,collection_start_date,collection_end_date,latitude,latitude_end,longitude,longitude_end,elevation,elevation_end,size,size_unit CM IS COMMON,,collector,primary_location_type,igsn,,sample_comment,,field_name KEYED LIST,sample description,geological_age,age (min)MA,age (max)MA,sample_comment,classification,sample description,sample_type"
 

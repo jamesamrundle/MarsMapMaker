@@ -1,56 +1,65 @@
 import React, {Component} from 'react';
 import "../css/MapBuilder.css"
 import {conversionUserOptions} from "./Helpers/renderSelectOptions"
-import {CM,MM} from "./Helpers/FileHelpers"
+import {CM, FORMAT_CONV, FORMAT_M21, MM} from "./Helpers/FileHelpers"
 
 class ConversionField extends Component {
     constructor(props) {
         super(props);
-        this.state={field:null,unit:null, addValue: false}
-        this.displayExample=this.displayExample.bind(this);
+        this.state = {field: null, unit: null, addValue: false}
+        this.displayExample = this.displayExample.bind(this);
 
-        this.setField=this.setField.bind(this);
-        this.setUnit=this.setUnit.bind(this);
+        this.setField = this.setField.bind(this);
+        this.setUnit = this.setUnit.bind(this);
     }
 
-    displayExample(){
-        if(this.state.field&&this.state.field.length >0) {
+    displayExample() {
+        if (this.state.field && this.state.field.length > 0) {
             return (
-                this.props.sesarValues.sesarField+ " : " + "["+this.state.field.toString()+"]"
-            )}
+                this.props.sesarValues.sesarField + " : " + "[" + this.state.field.toString() + "]"
+            )
+        }
         else return ""
     }
 
-    renderChoices(){
-        var defined = (value) => " Ex : "+(value.exampleValue!=""?value.exampleValue:"undefined")
+    getUnselected = () => {
 
-        const allChoices = Object.entries(this.props.allUserFields).map(
-            ([key, value]) =>{
-                if (!value.disabled) return (
-                    <option id={key}  >
-                        {key+" "}+ {defined(value) } </option>)
-                else return (
-                    <option   id={key} disabled={value.disabled} >
-                        {key+" "} +{defined(value)} </option>
-                )});
-        return allChoices;
-    }
+        let selectedNow = this.state.field;
+        let wasSubmitted = (this.state.submittedField) ? this.state.submittedField : null;
+        // console.log("snap",snapShot, "selectedNow",selectedNow)
+        let removeMe=[];
+        // if(snapShot!= null) {
+        //     for (var each of snapShot) {
+        //         console.log("each",each)
+        //         if ( selectedNow.indexOf(each) <0 ) removeMe.push(each)
+        //     }
+        // }
+        if (wasSubmitted != null) {
 
-    extraUnitField = () =>{
+            if (selectedNow != wasSubmitted) removeMe=[wasSubmitted]
+        }
+    console.log("removeme!",removeMe)
+    return removeMe
+}
+
+
+extraUnitField = () =>{
         if(this.state.addValue===true) {
             return (
-                <div>
-                    <h4> Complete data to {this.props.selectedField} is comprised of</h4>
-                    <h4> {this.props.originField} and : </h4>
+                <div className="">
+                    <h5 className={"verify"}> Complete data to {this.props.selectedField} is comprised of</h5>
+                    <h5 className={"verify"}> {this.props.originField} and : </h5>
                     <br/>
-                    <select className="form-control" id="sel2" name="sellist2" onChange={this.setField}>
+                    <div>
+                    <select className="form-control inline inline-grid" id="sel2" name="sellist2" onChange={this.setField}>
                         {conversionUserOptions(this.props.allUserFields)}
                     </select>
-                    <fieldset>
-                        <legend>This data is in:</legend>
-                        <input type="radio" name="measure_unit" value={CM} onClick={this.setUnit}/>CM
+                    <div className={"unit"}>
+
+                        <input  type="radio" name="measure_unit" value={CM} onClick={this.setUnit}/>CM <br/>
                         <input type="radio" name="measure_unit" value={MM} onClick={this.setUnit}/>MM
-                    </fieldset>
+                    </div>
+                    </div>
                 </div>
             )
         }
@@ -64,8 +73,18 @@ class ConversionField extends Component {
     toggleAdd = () =>{ this.setState({addValue:!this.state.addValue})}
 
     submitSelection = () => {
+
         this.props.addConversionValue(this.props.selectedField,
             {field: this.state.field , unit: this.state.unit })
+
+        if(this.state.field) {
+            this.props.callBack({selectedField: this.props.selectedField},
+                [this.state.field], //because callback fcts expect array for these values
+                FORMAT_CONV,
+                this.getUnselected())
+        }
+
+        this.setState({submittedField : this.state.field})
     }
 
     showConversion = () => {
@@ -81,19 +100,22 @@ class ConversionField extends Component {
                 if (this.state.unit === MM) {
                     scalar = 1 / 10;
                 }
+                else scalar=1
             }
             if (defaultUnit === MM) {
                 if (this.state.unit === CM) {
                     scalar = 10;
                 }
+                else scalar=1
+
             }
 
             if (this.state.showConv) {
                 return (
-                    <div>
-                        <h4>
+                    <div className="inline verify">
+                        <h5>
                         {defaultVal}{defaultUnit} + {extraVal}{this.state.unit} for a total submitted value
-                        of { Number(defaultVal) + Number(extraVal * scalar)}</h4>
+                        of { Number(defaultVal) + Number(extraVal * scalar)}</h5>
                     </div>
                 )
             }
@@ -120,13 +142,13 @@ class ConversionField extends Component {
 
     render() { //console.log("CONVERS",this.props)
         return (
+
             <div className="fieldElement" >
                 {this.extraUnitField()}
-                {this.showConversion()}
-
                 {this.showButton()}
-
+                {this.showConversion()}
             </div>
+
         );
     }
 }

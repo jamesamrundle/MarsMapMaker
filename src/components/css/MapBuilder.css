@@ -6,7 +6,7 @@
 }
 .fieldContainer{
 
-    /*width: fit-content;*/
+    width: fit-content;
     position:center;
 
     border:1px solid #C4C4C4;
@@ -15,6 +15,15 @@
     border-radius:10px;
     color:#333;
     margin-bottom: 15px;
+}
+.subContainer{
+    position:center;
+    border:1px solid #c4c4be;
+    background-color: #fbfff9;
+    padding:15px 20px;
+    border-radius:10px;
+    color:#333;
+    margin-bottom: 5px;
 }
 
 .fileBtn{
@@ -37,7 +46,18 @@ fontStyle:italics;
 }
 
 .inline{
-    display: inline;
+    display: inline-block;
+
+
+}
+
+.verify{
+    text-align: center;
+}
+
+.unit{
+    display: inline-block;
+    vertical-align: middle;
 }
 
 #dateTxtBox
@@ -48,4 +68,12 @@ fontStyle:italics;
 
 #sel2{
     width:25ch;
+}
+
+.modal{
+    width: auto;
+}
+.modal-dialog{
+    max-width: fit-content;
+    width:auto;
 }

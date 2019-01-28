@@ -14,7 +14,11 @@ class XRenderFormats extends Component {
         super(props);
         this.state = {format: null,
             selectedField:null,
-            disabledSelf:false}
+            disabledSelf:false,
+            showExample1:true,
+            showExample2:true,
+            showExample3:true,
+        }
 
     }
 
@@ -58,7 +62,26 @@ class XRenderFormats extends Component {
    // handleFormatToMulti(e,sesarField){ this.props.handleFormatToMulti(e,sesarField)}
 
 
+    renderMappingDisplay = (num) => {
+       if(this.state["showExample"+num.toString()]){ return (
+            <div>
+                {num}
+            <h5 className="verify">Mapping your field(s)</h5>
 
+        <h6 className="subText verify">{(this.state.extraUserFields != null)?
+            this.props.userField.fieldName +" + "+JSON.stringify( this.state.extraUserFields):
+            this.props.userField.fieldName} </h6>
+
+
+
+        <h5 className={"verify"} >to SESAR field&nbsp;{this.state.selectedField}</h5>
+
+                <input type={"radio"} onClick={()=>this.setState({["showExample"+num.toString()]: !this.state["showExample"+num.toString()]})} />
+            </div>
+
+    ) }
+    else return <div><input type="radio" onClick={()=>this.setState({["showExample"+num.toString()]: !this.state["showExample"+num.toString()]})} /></div>
+    }
 
 
     changeFormat= (e) =>{ this.props.changeFormat(e, this.props.sesarValues.sesarField) }
@@ -88,35 +111,21 @@ class XRenderFormats extends Component {
                 <div className="card-header" >
                     <div className="col-lg-5">
                   <h3 className="">{this.props.userField.fieldName}</h3>
-                    <dt className="subText "> &emsp;{this.props.userField.exampleValue}</dt>
+                    <dt className="subText "> &emsp;&emsp;&emsp;{this.props.userField.exampleValue}</dt>
                     </div>
                     <div className="col-lg-7">
-                        <h5 className="inline">Mapping your field(s)</h5>
-                            <h6 className="subText inline">{(this.state.extraUserFields != null)?
-                                this.props.userField.fieldName +" + "+JSON.stringify( this.state.extraUserFields):
-                                this.props.userField.fieldName} </h6>
-                            <br/>
-                            <h5>to SESAR field</h5>
-                            <h6 className="subText inline"> {this.state.selectedField} </h6>
+                        {this.renderMappingDisplay(1)}
 
                     </div>
                 </div>
 
 
-
                 <div className="card-body " >
-                    <dl><dt className="subText "> Example from your data :{this.props.userField.exampleValue}</dt>
-                    </dl>
+                    <div className="col-lg-4">
+
                     <br/>
 
-                    <h5 className="inline">Mapping your field(s)
-                        <h5 className="subText inline">{(this.state.extraUserFields != null)?
-                                this.props.userField.fieldName +" + "+JSON.stringify( this.state.extraUserFields):
-                                this.props.userField.fieldName} </h5>
-                        <br/>
-                        to SESAR field
-                        <h5 className="subText inline"> {this.state.selectedField} </h5>
-                    </h5>
+                        {this.renderMappingDisplay(2)}
 
                         <br/>
                         <br/>
@@ -128,9 +137,10 @@ class XRenderFormats extends Component {
 
                         </select>
 
-                </div>
+                    </div>
 
-                <FormatSwitch
+                <div className="col-lg-4">
+                    <FormatSwitch
                               {...this.props}
                                collapseOnFinish = {this.collapseOnFinish}
                               format={this.state.format}
@@ -140,7 +150,12 @@ class XRenderFormats extends Component {
                               addConversionValue={this.props.addConversionValue}
                               registerExtraFields={this.registerExtraFields}
                               defaultUnit={this.props.defaultUnit}/>
+                </div>
 
+                    <div className="col-lg-4">
+                        {this.renderMappingDisplay(3)}
+                    </div>
+            </div>
 
             </div>
             </div>)

@@ -84,7 +84,7 @@ export var fieldsDict = {
     },
     "size_unit CM IS COMMON":{ disabled:false,
         "sesarField":"size_unit CM IS COMMON",
-        "format":FORMAT_CONV
+        "format":FORMAT_121
     },
 
     "collector":{ disabled:false,
