@@ -69,8 +69,33 @@ class Multi2One extends Component {
         }
     }
 
+selectField = (allUserFields) => {return (
+
+            <div className="inline">
 
 
+                    <button onClick={(e) => this.ADD(e)} className="inline fa fa-minus"/>
+
+
+
+            <select className="form-control inline" id="sel2" name="sellist2"
+                    >
+
+                {toggledUserOptions(allUserFields)}
+
+            </select>
+        </div>
+    )}
+
+    renderExtraFields = () =>{
+            var retVal = [];
+            for(var i = 0;i < this.props.addFieldCount;i++){
+                retVal.push(this.selectField(this.props.allUserFields))
+            }
+            console.log(retVal)
+            console.log(this.props.fieldCount)
+            return retVal
+        }
 
 
 
@@ -89,17 +114,16 @@ class Multi2One extends Component {
         return (
             <div className="fieldElement" onFocus={()=>this.setState({snapShot:this.state.currentFields})} >
                     <span>
-                        <h3>{this.props.selectedField}</h3>
                         <h5 className="subText">{this.displayExample()}</h5>
                     </span>
+                {this.renderExtraFields()}
 
-                <select multiple className="form-control" id="sel2" name="sellist2" onChange={(e)=>this.handleSelects(e)}>
-                    {toggledUserOptions(this.props.allUserFields,this.props.selectedField,this.props.originField)}
-                    </select>
-                <button onClick={()=> this.handleSubmit()}  >Submit</button>
             </div>
         );
     }
 }
-
+/*<select multiple className="form-control" id="sel2" name="sellist2" onChange={(e)=>this.handleSelects(e)}>
+                    {toggledUserOptions(this.props.allUserFields,this.props.selectedField,this.props.originField)}
+                    </select>
+                <button onClick={()=> this.handleSubmit()}  >Submit</button>*/
 export default Multi2One;

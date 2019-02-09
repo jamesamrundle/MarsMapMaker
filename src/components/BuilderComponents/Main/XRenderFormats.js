@@ -3,6 +3,7 @@ import {FormatSwitch} from "./FormatSwitcher";
 import "../../css/MapBuilder.css"
 import {firstMapOptions} from "../Helpers/renderSelectOptions"
 import {handleOptionSelect} from "../Helpers/CallBacks"
+import AddFieldButton from "./AddFieldButton";
 
 
 
@@ -15,9 +16,8 @@ class XRenderFormats extends Component {
         this.state = {format: null,
             selectedField:null,
             disabledSelf:false,
-            showExample1:true,
-            showExample2:true,
-            showExample3:true,
+            addField:0,
+
         }
 
     }
@@ -62,27 +62,29 @@ class XRenderFormats extends Component {
    // handleFormatToMulti(e,sesarField){ this.props.handleFormatToMulti(e,sesarField)}
 
 
-    renderMappingDisplay = (num) => {
-       if(this.state["showExample"+num.toString()]){ return (
-            <div>
-                {num}
-            <h5 className="verify">Mapping your field(s)</h5>
+    // renderMappingDisplay = (num) => {
+    //    if(this.state["showExample"+num.toString()]){ return (
+    //         <div>
+    //             {num}
+    //         <h5 className="verify">Mapping your field(s)</h5>
+    //
+    //     <h6 className="subText verify">{(this.state.extraUserFields != null)?
+    //         this.props.userField.fieldName +" + "+JSON.stringify( this.state.extraUserFields):
+    //         this.props.userField.fieldName} </h6>
+    //
+    //
+    //
+    //     <h5 className={"verify"} >to SESAR field&nbsp;{this.state.selectedField}</h5>
+    //
+    //             <input type={"radio"} onClick={()=>this.setState({["showExample"+num.toString()]: !this.state["showExample"+num.toString()]})} />
+    //         </div>
+    //
+    // ) }
+    // else return <div><input type="radio" onClick={()=>this.setState({["showExample"+num.toString()]: !this.state["showExample"+num.toString()]})} /></div>
+    // }
 
-        <h6 className="subText verify">{(this.state.extraUserFields != null)?
-            this.props.userField.fieldName +" + "+JSON.stringify( this.state.extraUserFields):
-            this.props.userField.fieldName} </h6>
 
-
-
-        <h5 className={"verify"} >to SESAR field&nbsp;{this.state.selectedField}</h5>
-
-                <input type={"radio"} onClick={()=>this.setState({["showExample"+num.toString()]: !this.state["showExample"+num.toString()]})} />
-            </div>
-
-    ) }
-    else return <div><input type="radio" onClick={()=>this.setState({["showExample"+num.toString()]: !this.state["showExample"+num.toString()]})} /></div>
-    }
-
+    addField = (e) => {console.log("goin here"); this.setState(preState => ({addField:preState.addField+1}))}
 
     changeFormat= (e) =>{ this.props.changeFormat(e, this.props.sesarValues.sesarField) }
 
@@ -109,52 +111,46 @@ class XRenderFormats extends Component {
             <div className="card col-lg-10 " >
 
                 <div className="card-header" >
+
+
+
                     <div className="col-lg-5">
-                  <h3 className="">{this.props.userField.fieldName}</h3>
-                    <dt className="subText "> &emsp;&emsp;&emsp;{this.props.userField.exampleValue}</dt>
+                        <div className="inline col-lg-1">
+                            <AddFieldButton allUserFields={this.props.sesarFields}
+                                            addFieldOnClick={(e)=>this.addField(e)}
+                                            format={this.state.format}
+                                            selectedField={this.state.selectedField}/>
+                        </div>
+                        <FormatSwitch
+                            {...this.props}
+                            collapseOnFinish = {this.collapseOnFinish}
+                            format={this.state.format}
+                            handleSelect={this.handleSelect}
+                            originField={this.props.userField.fieldName}
+                            exampleValue={this.props.userField.exampleValue}
+                            selectedField={this.state.selectedField}
+                            addConversionValue={this.props.addConversionValue}
+                            registerExtraFields={this.registerExtraFields}
+                            defaultUnit={this.props.defaultUnit}
+                            addFieldCount={this.state.addField}/>
                     </div>
-                    <div className="col-lg-7">
-                        {this.renderMappingDisplay(1)}
-
-                    </div>
-                </div>
 
 
-                <div className="card-body " >
-                    <div className="col-lg-4">
 
-                    <br/>
+                    <div className="col-lg-5">
+                        <select className="form-control" id="sel2" name="sellist2"
+                                disabled={this.isDisabled()} onChange={this.handleSelect} >
 
-                        {this.renderMappingDisplay(2)}
-
-                        <br/>
-                        <br/>
-
-                    <select className="form-control" id="sel2" name="sellist2"
-                            disabled={this.isDisabled()} onChange={this.handleSelect} >
-
-                        {firstMapOptions(this.props.sesarFields,this.props.userField.fieldName)}
+                            {firstMapOptions(this.props.sesarFields,this.props.userField.fieldName)}
 
                         </select>
 
                     </div>
 
-                <div className="col-lg-4">
-                    <FormatSwitch
-                              {...this.props}
-                               collapseOnFinish = {this.collapseOnFinish}
-                              format={this.state.format}
-                              handleSelect={this.handleSelect}
-                              originField={this.props.userField.fieldName}
-                              selectedField={this.state.selectedField}
-                              addConversionValue={this.props.addConversionValue}
-                              registerExtraFields={this.registerExtraFields}
-                              defaultUnit={this.props.defaultUnit}/>
-                </div>
 
-                    <div className="col-lg-4">
-                        {this.renderMappingDisplay(3)}
-                    </div>
+
+
+
             </div>
 
             </div>

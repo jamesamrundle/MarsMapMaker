@@ -44,22 +44,21 @@ class ConversionField extends Component {
 
 
 extraUnitField = () =>{
-        if(this.state.addValue===true) {
+        if(this.props.addFieldCount > 0) {
             return (
-                <div className="">
-                    <h5 className={"verify"}> Complete data to {this.props.selectedField} is comprised of</h5>
-                    <h5 className={"verify"}> {this.props.originField} and : </h5>
-                    <br/>
-                    <div>
+                <div className="inline">
+
+                    <button onClick={(e) => this.ADD(e)} className="inline fa fa-minus"/>
+
                     <select className="form-control inline inline-grid" id="sel2" name="sellist2" onChange={this.setField}>
                         {conversionUserOptions(this.props.allUserFields)}
                     </select>
-                    <div className={"unit"}>
+                    <div className={"unit inline"}>
 
                         <input  type="radio" name="measure_unit" value={CM} onClick={this.setUnit}/>CM <br/>
                         <input type="radio" name="measure_unit" value={MM} onClick={this.setUnit}/>MM
                     </div>
-                    </div>
+
                 </div>
             )
         }
@@ -145,8 +144,8 @@ extraUnitField = () =>{
 
             <div className="fieldElement" >
                 {this.extraUnitField()}
-                {this.showButton()}
-                {this.showConversion()}
+                {/*{this.showButton()}*/}
+                {/*{this.showConversion()}*/}
             </div>
 
         );

@@ -2,8 +2,7 @@
     display:inline-block !important;
     margin-left:20px;
     margin-right:20px;
-    margin-bottom:20px;
-}
+    }
 .fieldContainer{
 
     width: fit-content;
@@ -47,10 +46,11 @@ fontStyle:italics;
 
 .inline{
     display: inline-block;
-
-
 }
 
+.inline1{
+    display: inline;
+}
 .verify{
     text-align: center;
 }
