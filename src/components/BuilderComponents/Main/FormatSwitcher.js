@@ -18,7 +18,8 @@ function ShowOnFormat(props){
                           decouple={props.decouple}
                           callBack={props.multiCallBack}
                           originField={props.originField}
-                          registerExtraFields={props.registerExtraFields}/>
+                          registerExtraFields={props.registerExtraFields}
+                          removeField={props.removeField}/>
     }
 
     else if(props.format == (FORMAT_121 || FORMAT_DATE)) {
@@ -38,7 +39,9 @@ function ShowOnFormat(props){
                                 callBack={props.multiCallBack}
                                 originField={props.originField}
                                 addConversionValue={props.addConversionValue}
-                                defaultUnit={props.defaultUnit}/>
+                                defaultUnit={props.defaultUnit}
+                                removeField={props.removeField}
+                                removeFieldCallBack={props.removeFieldCallBack}/>
     }
 
             // console.log("null format return")
@@ -51,7 +54,7 @@ export function FormatSwitch(props){
 
 
 
-   return <div className="inline col-lg-8">
+   return <div className="inline col-lg-9">
         <h4 className="inline">{props.originField}</h4>
         <h5 className="subText inline "> &emsp;{props.exampleValue}</h5>
         {ShowOnFormat(props)}

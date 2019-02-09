@@ -60,16 +60,29 @@ class XMapBuilder extends Component {
 
         currentMapValueFields=(oldVal)=>{return (this.state.mapValues[oldVal].userValues)};
 
+    removeFieldCallBack = (oldField,originField) =>{
+
+        let newFields = enableUserField(oldField,this.state.fields);
+        let  newMapValues = {...this.state.mapValues};
+        delete newMapValues[originField].extra ;
+        newMapValues[originField].userValues = newMapValues[originField].userValues.splice(0,1)
+        console.log(newMapValues);
+        this.setState(preState => ({
+            fields: newFields,
+
+            mapValues : newMapValues //{...preState.mapValues, [sesarValues.selectedField]: newMapValue}
+        }))
+    }
 
     callBack =(sesarValues,userField,format,oldField)=> { //on button click toggles disable for option and sets mapping variable
-        console.log("kallbacking", sesarValues, "uf", userField, "form", format)
+        console.log("kallbacking", sesarValues, "uf", userField, "form", format , "oldfield",oldField)
         let newSesarFields = disableSesarField(this.state.sesarFields,sesarValues); //returns state.sesarFields
         let newMapValues = addToBeMapped(this.state.mapValues,userField, sesarValues, format); //returns state.mapValues
         console.log("new map values",newMapValues)
         let newFields = setUserField(this.state.fields,userField, sesarValues); //returns state.fields
 
         if(oldField !== null ) {
-            console.log("made it!")
+            console.log("made it!",oldField)
             let userFieldsToEnable = this.currentMapValueFields(oldField);
             newFields = enableUserField(userFieldsToEnable,newFields);
             newSesarFields = enableSesarField(oldField,newSesarFields);
@@ -118,7 +131,8 @@ class XMapBuilder extends Component {
                                               allUserFields={this.state.fields} decouple={this.decoupleOldUserFieldsMapValues}
                                  callBack={this.callBack} multiCallBack={this.multiCallBack} changeFormat={this.changeFormat}
                                     addConversionValue={this.addConversionValue}
-                                    defaultUnit={this.state.mapValues.defaultUnit}/> </div>
+                                    defaultUnit={this.state.mapValues.defaultUnit}
+                                removeFieldCallBack={this.removeFieldCallBack}/> </div>
 
             } )
         }

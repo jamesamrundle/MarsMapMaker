@@ -48,7 +48,7 @@ extraUnitField = () =>{
             return (
                 <div className="inline">
 
-                    <button onClick={(e) => this.ADD(e)} className="inline fa fa-minus"/>
+                    <button onClick={(e) => this.removeSelection(e)} className="inline fa fa-minus"/>
 
                     <select className="form-control inline inline-grid" id="sel2" name="sellist2" onChange={this.setField}>
                         {conversionUserOptions(this.props.allUserFields)}
@@ -65,16 +65,32 @@ extraUnitField = () =>{
     }
 
 
-    setField(e){this.setState({field:e.target.value.split(" ")[0] , showConv:true})}
 
-    setUnit(e){this.setState({unit:e.target.value}); console.log("!!",this.state)}
+    setUnit(e){
+        this.setState({unit:e.target.value},
+        this.addConversionValue )   }
+
+    addConversionValue =()=>{ //wrap callback in a methodless function for passing as second arg to setState
+        this.props.addConversionValue(this.props.selectedField,
+            {field: this.state.field , unit: this.state.unit }) }
 
     toggleAdd = () =>{ this.setState({addValue:!this.state.addValue})}
 
-    submitSelection = () => {
+    setField(e){
+        this.setState({field:e.target.value.split(" ")[0] , showConv:true},
+            this.submitSelection)}
 
-        this.props.addConversionValue(this.props.selectedField,
-            {field: this.state.field , unit: this.state.unit })
+    removeFieldCallBack = () =>{ this.props.removeFieldCallBack(this.state.field,this.props.selectedField)}
+
+    removeSelection = () =>{console.log("removeselection");
+        this.props.removeField(FORMAT_CONV);
+        this.removeFieldCallBack();
+        this.setState({field:null},)
+    }
+
+
+
+    submitSelection = () => {
 
         if(this.state.field) {
             this.props.callBack({selectedField: this.props.selectedField},

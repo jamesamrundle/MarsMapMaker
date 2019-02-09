@@ -4,6 +4,8 @@ import "../../css/MapBuilder.css"
 import {firstMapOptions} from "../Helpers/renderSelectOptions"
 import {handleOptionSelect} from "../Helpers/CallBacks"
 import AddFieldButton from "./AddFieldButton";
+import Multi2One from "../Multi2One";
+import {FORMAT_M21} from "../Helpers/FileHelpers";
 
 
 
@@ -86,6 +88,9 @@ class XRenderFormats extends Component {
 
     addField = (e) => {console.log("goin here"); this.setState(preState => ({addField:preState.addField+1}))}
 
+    removeField = (format) => {console.log("removeField"); if(format === FORMAT_M21) this.setState(preState => ({addField:preState.addField+1}))
+                            else { this.setState(preState => ({addField:0}))}}
+
     changeFormat= (e) =>{ this.props.changeFormat(e, this.props.sesarValues.sesarField) }
 
     isDisabled = () =>{return (this.props.userField.disabled && !this.state.disabledSelf)?  true: false};
@@ -132,12 +137,14 @@ class XRenderFormats extends Component {
                             addConversionValue={this.props.addConversionValue}
                             registerExtraFields={this.registerExtraFields}
                             defaultUnit={this.props.defaultUnit}
-                            addFieldCount={this.state.addField}/>
+                            addFieldCount={this.state.addField}
+                            removeField = {this.removeField}
+                            />
                     </div>
 
 
 
-                    <div className="col-lg-5">
+                    <div className="col-lg-3">
                         <select className="form-control" id="sel2" name="sellist2"
                                 disabled={this.isDisabled()} onChange={this.handleSelect} >
 
