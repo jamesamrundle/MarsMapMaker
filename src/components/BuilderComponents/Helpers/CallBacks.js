@@ -4,23 +4,25 @@ import {FORMAT_121, FORMAT_M21} from "./FileHelpers";
 
 export let decoupleOldUserFieldsMapValues=(oldUserFields,currentMapping)=>{
     var editedCurrentMapping=  currentMapping ;
-    var temp = []
-    console.log("uf",oldUserFields)
-    console.log("curr",currentMapping)
-    if(typeof editedCurrentMapping.userValues != "string") {
-        for (var each of editedCurrentMapping.userValues) {
-            console.log(each)
-            if (oldUserFields.indexOf(each) < 0)
-                temp.push(each)
-        }
-    }else {
-        if(oldUserFields.indexOf(currentMapping.userValues) < 0)
-            temp.push(currentMapping.userValues)
-    }
+   if(oldUserFields) {
+       var temp = []
+       console.log("uf", oldUserFields)
+       console.log("curr", currentMapping)
+       if (typeof editedCurrentMapping.userValues != "string") {
+           for (var each of editedCurrentMapping.userValues) {
+               console.log(each)
+               if (oldUserFields.indexOf(each) < 0)
+                   temp.push(each)
+           }
+       } else {
+           if (oldUserFields.indexOf(currentMapping.userValues) < 0)
+               temp.push(currentMapping.userValues)
+       }
 
-    console.log("decoupled",oldUserFields,"now ",temp)
-    return {...editedCurrentMapping, userValues:temp}
-
+       console.log("decoupled", oldUserFields, "now ", temp)
+       return {...editedCurrentMapping, userValues: temp}
+   }
+   else return editedCurrentMapping;
 }
 
 
@@ -58,7 +60,7 @@ export let enableUserField=(oldUserField,newFields)=>{
         temp[oldUserField].disabled = false;
         delete temp[oldUserField].mappedTo;
 
-    } else {
+    } else if (oldUserField ) {
         console.log("ensuser ruhroh")
         for (var each of oldUserField){
             temp[each].disabled = false;

@@ -19,17 +19,18 @@ function ShowOnFormat(props){
                           callBack={props.multiCallBack}
                           originField={props.originField}
                           registerExtraFields={props.registerExtraFields}
-                          removeField={props.removeField}/>
+                          minusField={props.minusField}
+                          removeFieldCallBack={props.removeFieldCallBack}/>
     }
 
-    else if(props.format == (FORMAT_121 || FORMAT_DATE)) {
-
-        // console.log("switch 121")
-        return <One2One
-            selectedField={props.selectedField}
-            changeFormat={props.changeFormat}
-            handleSelect={props.handleSelect}/>
-    }
+    // else if(props.format == (FORMAT_121 || FORMAT_DATE)) {
+    //
+    //     // console.log("switch 121")
+    //     return <One2One
+    //         selectedField={props.selectedField}
+    //         changeFormat={props.changeFormat}
+    //         handleSelect={props.handleSelect}/>
+    // }
 
     else if(props.format == (FORMAT_CONV)) {
         // console.log("switch conv")
@@ -40,7 +41,7 @@ function ShowOnFormat(props){
                                 originField={props.originField}
                                 addConversionValue={props.addConversionValue}
                                 defaultUnit={props.defaultUnit}
-                                removeField={props.removeField}
+                                minusField={props.minusField}
                                 removeFieldCallBack={props.removeFieldCallBack}/>
     }
 

@@ -10,7 +10,7 @@ import {toggledUserOptions} from "./Helpers/renderSelectOptions"
 class Multi2One extends Component {
     constructor(props) {
         super(props);
-        this.state={currentFields:null }
+        this.state={currentFields:[] }
     }
 
 
@@ -40,45 +40,67 @@ class Multi2One extends Component {
 
 
 
-    handleSelects = (e) =>{
-        if(e) {
-            var options = e.target.selectedOptions;
-           // console.log("M21", options);
-            var fields = []
-            Object.entries(options).map( // creates array of selected userFields
-                (each) => {
-                    //console.log("M21", each[1].id);
-                    fields = fields.concat(each[1].id)
-                })
-            this.setState({currentFields: fields})
+    handleSelects = (extraField) =>{
+        if(extraField) {
+
+            this.setState({currentFields: this.state.currentFields.concat(extraField)},this.handleSubmit)
         }}
 
     handleSubmit = () =>{
 
         this.setState({...this.state,submittedFields:this.state.currentFields})
 
-        this.props.collapseOnFinish();
+        //this.props.collapseOnFinish();
 
-        this.props.registerExtraFields(this.state.currentFields);
+        //this.props.registerExtraFields(this.state.currentFields); // 2/10 i think its redundant
 
         if(this.state.currentFields) {
             this.props.callBack({selectedField: this.props.selectedField},
                 this.state.currentFields,
-                FORMAT_M21,
-                this.getUnselected())
+                FORMAT_M21)
+                //,this.getUnselected())
         }
     }
 
-selectField = (allUserFields) => {return (
+    handleMinus=(thisInput)=>{
+        var currentFields = this.state.currentFields;
+        var location = currentFields.indexOf(thisInput)
+        if(location >= 0){
+            currentFields.splice(location,1)
+        }
+
+        this.setState({...this.state,submittedFields:currentFields},this.minusCallBack)
+
+        this.props.minusField(FORMAT_M21)
+    }
+
+    minusCallBack =()=>{if(this.state.currentFields) {
+        this.props.callBack({selectedField: this.props.selectedField},
+            this.state.currentFields,
+            FORMAT_M21,
+        this.getUnselected())
+
+        this.setState({...this.state,submittedFields:this.state.currentFields})
+    }}
+
+
+selectField = (allUserFields) => {
+        var thisInput;
+        var handleSelect = (e) => {
+            var val = e.target.value;
+            thisInput = val;
+            this.handleSelects(val)
+        }
+        return (
 
             <div className="inline">
 
 
-                    <button onClick={(e) => this.ADD(e)} className="inline fa fa-minus"/>
+                    <button onClick={() =>this.handleMinus(thisInput) } className="inline fa fa-minus"/>
 
 
 
-            <select className="form-control inline" id="sel2" name="sellist2"
+            <select className="form-control inline" id="sel2" name="sellist2" onChange={(e)=>handleSelect(e)}
                     >
 
                 {toggledUserOptions(allUserFields)}

@@ -70,8 +70,8 @@ extraUnitField = () =>{
         this.setState({unit:e.target.value},
         this.addConversionValue )   }
 
-    addConversionValue =()=>{ //wrap callback in a methodless function for passing as second arg to setState
-        this.props.addConversionValue(this.props.selectedField,
+    addConversionValue =()=>{
+        this.props.addConversionValue(this.props.selectedField, //adds secondary field w unit to mapValues
             {field: this.state.field , unit: this.state.unit }) }
 
     toggleAdd = () =>{ this.setState({addValue:!this.state.addValue})}
@@ -80,10 +80,11 @@ extraUnitField = () =>{
         this.setState({field:e.target.value.split(" ")[0] , showConv:true},
             this.submitSelection)}
 
-    removeFieldCallBack = () =>{ this.props.removeFieldCallBack(this.state.field,this.props.selectedField)}
+    removeFieldCallBack = () =>{ //if removing secondary field, enables the field and removes data from mapValues
+        this.props.removeFieldCallBack(this.state.field,this.props.selectedField)}
 
     removeSelection = () =>{console.log("removeselection");
-        this.props.removeField(FORMAT_CONV);
+        this.props.minusField(FORMAT_CONV);
         this.removeFieldCallBack();
         this.setState({field:null},)
     }

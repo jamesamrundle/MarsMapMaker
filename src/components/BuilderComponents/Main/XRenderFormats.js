@@ -36,7 +36,7 @@ class XRenderFormats extends Component {
         let wasSelected = this.state.selectedField;
         let isProperEvent = (e.target != null);
         let val = (event.target != null)? event.target.value : event;
-
+        console.log("THIS IS VAL",val)
         let stateObj;
 
         //handles submission of default  "SELECT FIELD" option
@@ -88,16 +88,16 @@ class XRenderFormats extends Component {
 
     addField = (e) => {console.log("goin here"); this.setState(preState => ({addField:preState.addField+1}))}
 
-    removeField = (format) => {console.log("removeField"); if(format === FORMAT_M21) this.setState(preState => ({addField:preState.addField+1}))
+    minusField = (format) => {console.log("minusField"); if(format === FORMAT_M21) this.setState(preState => ({addField:preState.addField-1}))
                             else { this.setState(preState => ({addField:0}))}}
 
-    changeFormat= (e) =>{ this.props.changeFormat(e, this.props.sesarValues.sesarField) }
+    //changeFormat= (e) =>{ this.props.changeFormat(e, this.props.sesarValues.sesarField) }
 
     isDisabled = () =>{return (this.props.userField.disabled && !this.state.disabledSelf)?  true: false};
 
-    collapseOnFinish = () => this.setState({collapse:true});
-
-    expandOnEdit = () => this.setState({collapse:false})
+    // collapseOnFinish = () => this.setState({collapse:true});
+    //
+    // expandOnEdit = () => this.setState({collapse:false})
 
     registerExtraFields=(fields)=> this.setState({extraUserFields:fields})
 
@@ -128,9 +128,9 @@ class XRenderFormats extends Component {
                         </div>
                         <FormatSwitch
                             {...this.props}
-                            collapseOnFinish = {this.collapseOnFinish}
+                           // collapseOnFinish = {this.collapseOnFinish}
                             format={this.state.format}
-                            handleSelect={this.handleSelect}
+                            //handleSelect={this.handleSelect}
                             originField={this.props.userField.fieldName}
                             exampleValue={this.props.userField.exampleValue}
                             selectedField={this.state.selectedField}
@@ -138,7 +138,7 @@ class XRenderFormats extends Component {
                             registerExtraFields={this.registerExtraFields}
                             defaultUnit={this.props.defaultUnit}
                             addFieldCount={this.state.addField}
-                            removeField = {this.removeField}
+                            minusField = {this.minusField}
                             />
                     </div>
 

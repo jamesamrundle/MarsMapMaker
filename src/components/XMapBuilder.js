@@ -43,20 +43,20 @@ class XMapBuilder extends Component {
 
 
 
-    changeFormat=(e,sesarField)=>{
-        var sesarFields = this.state.sesarFields;
-        var newFormat = e.target.value;
-
-        if (newFormat !== sesarFields[sesarField].format) {
-            var stateObject = sesarFields[sesarField];
-            stateObject.format = newFormat;
-            this.setState(preState => ({
-                sesarFields: {...sesarFields,
-                    [sesarField]: stateObject }
-
-            } ) )
-        }
-    }
+    // changeFormat=(e,sesarField)=>{
+    //     var sesarFields = this.state.sesarFields;
+    //     var newFormat = e.target.value;
+    //
+    //     if (newFormat !== sesarFields[sesarField].format) {
+    //         var stateObject = sesarFields[sesarField];
+    //         stateObject.format = newFormat;
+    //         this.setState(preState => ({
+    //             sesarFields: {...sesarFields,
+    //                 [sesarField]: stateObject }
+    //
+    //         } ) )
+    //     }
+    // }
 
         currentMapValueFields=(oldVal)=>{return (this.state.mapValues[oldVal].userValues)};
 
@@ -123,16 +123,18 @@ class XMapBuilder extends Component {
 
         if (userFields.length > 0) {
             return Object.entries(this.state.fields).map(([each, value]) => { //each is the sesar field object
-               // console.log("renderformats",value)
-                return <div> <XRenderFormats
-                                key={"RF-"+each}
-                                userField={{fieldName:each,...value}}
-                                sesarFields={this.state.sesarFields}
-                                              allUserFields={this.state.fields} decouple={this.decoupleOldUserFieldsMapValues}
-                                 callBack={this.callBack} multiCallBack={this.multiCallBack} changeFormat={this.changeFormat}
+                   // console.log("renderformats",value)
+                    return <div> <XRenderFormats
+                                    key={"RF-"+each}
+                                    userField={{fieldName:each,...value}}
+                                    sesarFields={this.state.sesarFields}
+                                    allUserFields={this.state.fields}
+                                    decouple={this.decoupleOldUserFieldsMapValues}
+                                    callBack={this.callBack} multiCallBack={this.multiCallBack} changeFormat={this.changeFormat}
                                     addConversionValue={this.addConversionValue}
                                     defaultUnit={this.state.mapValues.defaultUnit}
-                                removeFieldCallBack={this.removeFieldCallBack}/> </div>
+                                    removeFieldCallBack={this.removeFieldCallBack}/>
+                    </div>
 
             } )
         }
