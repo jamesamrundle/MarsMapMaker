@@ -60,11 +60,11 @@ class MapBuilder extends Component {
     decoupleOldUserFieldsMapValues=(oldUserFields,currentMapping)=>{
         var editedCurrentMapping=  currentMapping ;
         var temp = []
-        console.log("uf",oldUserFields)
-        console.log("curr",currentMapping)
+        //console.log("uf",oldUserFields)
+        //console.log("curr",currentMapping)
         if(typeof editedCurrentMapping.userValues != "string") {
             for (var each of editedCurrentMapping.userValues) {
-                console.log(each)
+
                 if (oldUserFields.indexOf(each) < 0)
                     temp.push(each)
             }
@@ -73,7 +73,7 @@ class MapBuilder extends Component {
                 temp.push(currentMapping.userValues)
         }
 
-        console.log("decoupled",oldUserFields,"now ",temp)
+        //console.log("decoupled",oldUserFields,"now ",temp)
         return {...editedCurrentMapping, userValues:temp}
 
     }

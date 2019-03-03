@@ -86,7 +86,7 @@ class XRenderFormats extends Component {
     // }
 
 
-    addField = (e) => {console.log("goin here"); this.setState(preState => ({addField:preState.addField+1}))}
+    addField = (e) => {console.log("goin here"); this.setState(preState => ({addField:preState.addField+1}),this.props.addExtraM21Field(this.state.selectedField))}
 
     minusField = (format) => {console.log("minusField"); if(format === FORMAT_M21) this.setState(preState => ({addField:preState.addField-1}))
                             else { this.setState(preState => ({addField:0}))}}
@@ -103,11 +103,8 @@ class XRenderFormats extends Component {
 
 
     render() {
-        if(this.state.collapse=== "") {
-            return (<div className="fieldContainer">
-                <h3>{this.props.userField.fieldName}</h3>
-                <button onClick={()=>this.expandOnEdit()} >Edit?</button>
-            </div>)
+        if(this.isDisabled()) {
+            return null
         }
 
         else return(
@@ -124,7 +121,8 @@ class XRenderFormats extends Component {
                             <AddFieldButton allUserFields={this.props.sesarFields}
                                             addFieldOnClick={(e)=>this.addField(e)}
                                             format={this.state.format}
-                                            selectedField={this.state.selectedField}/>
+                                            selectedField={this.state.selectedField}
+                                            addExtraM21Field = {this.props.addExtraM21Field}/>
                         </div>
                         <FormatSwitch
                             {...this.props}
@@ -139,6 +137,9 @@ class XRenderFormats extends Component {
                             defaultUnit={this.props.defaultUnit}
                             addFieldCount={this.state.addField}
                             minusField = {this.minusField}
+                            mapValues = {this.props.mapValues}
+                            setExtraM21Fields={this.props.setExtraM21Field}
+                            removeM21Field={this.props.removeM21Field}
                             />
                     </div>
 

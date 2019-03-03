@@ -20,7 +20,11 @@ function ShowOnFormat(props){
                           originField={props.originField}
                           registerExtraFields={props.registerExtraFields}
                           minusField={props.minusField}
-                          removeFieldCallBack={props.removeFieldCallBack}/>
+                          removeFieldCallBack={props.removeFieldCallBack}
+                          mapValues ={props.mapValues}
+                          setExtraM21Field={props.setExtraM21Field}
+                          removeM21Field={props.removeM21Field}
+        />
     }
 
     // else if(props.format == (FORMAT_121 || FORMAT_DATE)) {

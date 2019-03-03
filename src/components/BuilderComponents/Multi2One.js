@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import "../css/MapBuilder.css"
 import {FORMAT_CONV,FORMAT_DATE,FORMAT_M21 ,FORMAT_121} from "./Helpers/FileHelpers"
 import {toggledUserOptions} from "./Helpers/renderSelectOptions"
+import ExtraM21Field from "./ExtraM21Field"
 
 
 /* Unlike other components where one maps sesar fields to their fields,
@@ -15,108 +16,43 @@ class Multi2One extends Component {
 
 
 
-        getUnselected= () =>{
-        let snapShot = this.state.snapShot;
-        let selectedNow = this.state.currentFields;
-        let wasSubmitted = (this.state.submittedFields) ? this.state.submittedFields : null;
-        // console.log("snap",snapShot, "selectedNow",selectedNow)
-        let removeMe = []
-        // if(snapShot!= null) {
-        //     for (var each of snapShot) {
-        //         console.log("each",each)
-        //         if ( selectedNow.indexOf(each) <0 ) removeMe.push(each)
-        //     }
-        // }
-        if(wasSubmitted != null){
-            for (var each of wasSubmitted) {
-                console.log("each",each)
-                if ( selectedNow.indexOf(each) <0 && removeMe.indexOf(each)<0) removeMe.push(each)
-            }
-        }
 
-        // console.log("Remove these", removeMe)
-            return removeMe
+
+    setExtraM21Field = (selectedField, index) =>{
+        this.props.setExtraM21Field(this.props.selectedField,selectedField, index)
     }
 
-
-
-    handleSelects = (extraField) =>{
-        if(extraField) {
-
-            this.setState({currentFields: this.state.currentFields.concat(extraField)},this.handleSubmit)
-        }}
-
-    handleSubmit = () =>{
-
-        this.setState({...this.state,submittedFields:this.state.currentFields})
-
-        //this.props.collapseOnFinish();
-
-        //this.props.registerExtraFields(this.state.currentFields); // 2/10 i think its redundant
-
-        if(this.state.currentFields) {
-            this.props.callBack({selectedField: this.props.selectedField},
-                this.state.currentFields,
-                FORMAT_M21)
-                //,this.getUnselected())
-        }
+    removeExtraM21Field = (selectedField, index) =>{
+        this.props.removeM21Field(this.props.selectedField,selectedField, index)
     }
 
-    handleMinus=(thisInput)=>{
-        var currentFields = this.state.currentFields;
-        var location = currentFields.indexOf(thisInput)
-        if(location >= 0){
-            currentFields.splice(location,1)
-        }
-
-        this.setState({...this.state,submittedFields:currentFields},this.minusCallBack)
-
-        this.props.minusField(FORMAT_M21)
-    }
-
-    minusCallBack =()=>{if(this.state.currentFields) {
-        this.props.callBack({selectedField: this.props.selectedField},
-            this.state.currentFields,
-            FORMAT_M21,
-        this.getUnselected())
-
-        this.setState({...this.state,submittedFields:this.state.currentFields})
-    }}
-
-
-selectField = (allUserFields) => {
-        var thisInput;
-        var handleSelect = (e) => {
-            var val = e.target.value;
-            thisInput = val;
-            this.handleSelects(val)
-        }
-        return (
-
-            <div className="inline">
-
-
-                    <button onClick={() =>this.handleMinus(thisInput) } className="inline fa fa-minus"/>
-
-
-
-            <select className="form-control inline" id="sel2" name="sellist2" onChange={(e)=>handleSelect(e)}
-                    >
-
-                {toggledUserOptions(allUserFields)}
-
-            </select>
-        </div>
-    )}
 
     renderExtraFields = () =>{
-            var retVal = [];
-            for(var i = 0;i < this.props.addFieldCount;i++){
-                retVal.push(this.selectField(this.props.allUserFields))
-            }
-            console.log(retVal)
-            console.log(this.props.fieldCount)
-            return retVal
+           var mapValues;
+            console.log("M21 PROPS",this.props)
+
+        if(this.props.mapValues[this.props.selectedField]) {
+               mapValues = this.props.mapValues[this.props.selectedField].userValues
+
+
+               var retVal = [];
+               if (mapValues) {
+                   for (var i = 1; i < mapValues.length; i++) {
+                       // retVal.push(this.selectField(this.props.allUserFields, mapValues[i], i))
+                       retVal.push(<ExtraM21Field allUserFields ={this.props.allUserFields}
+                                                    mapValues ={mapValues[i]}
+                                                    index ={i}
+                                                    setExtraM21Field={this.setExtraM21Field}
+                                                    removeM21Field={this.removeExtraM21Field}
+                                                     />)
+
+                   }
+                   console.log(retVal)
+                   console.log(this.props.fieldCount)
+                   return retVal
+               }
+           }
+            else return
         }
 
 

@@ -39,30 +39,43 @@ export let conversionUserOptions = allUserFields => Object.entries(allUserFields
         )});
 
 //from MultiToOne
-
-export let toggledUserOptions = (allUserFields, selectedField,originField) =>
-    Object.entries(allUserFields).map(
+                                                //NULL         //sample_comment
+export let toggledUserOptions = (allUserFields, selectedField,originField) =>{
+   var allChoices =  Object.entries(allUserFields).map(
     ([key, value]) =>{
-        //if selected from other field
+        //if available?
         if (!value.disabled)
             return ( <option className="" title={value.exampleValue}
                              id={key} key={"UF" + key}  > {key}</option>);
         //if selected by self
-        if(((value.disabled === true) && (value.mappedTo !== selectedField)) ||
-            key === originField )
+        if(((value.disabled === true) && (key === selectedField )) )
+            // || key === originField )
             return ( <option   className="" title={value.exampleValue}
                                 id={key} key={"UF" + key}
+                               selected={"selected"}
                                disabled={value.disabled} >
 
                                {key}</option>);
-        //origin field
-        else
-            return( <option   className="" title={value.exampleValue}
-                              id={key} key={"UF" + key}
-                              style={{color:"red"}} >
+        //selected elsewhere
+        else if(((value.disabled === true) && (key !== selectedField )) ){
+            return ( <option   className="" title={value.exampleValue}
+                               id={key} key={"UF" + key}
 
-                              {key}</option>)
+                               disabled={value.disabled} >
+
+                {key}</option>);
+            }
+        //origin field
+        //     else return( <option   className="" title={value.exampleValue}
+        //                       id={key} key={"UF" + key}
+        //                       style={{color:"red"}} >
+        //
+        //                       {key}</option>)
     });
+
+        // react renders array of elements
+        return [<option id="nothing" value={"NULL"}>{"SELECT FIELD"}</option>].concat(allChoices);
+}
 
 //from DefaultInfo
 

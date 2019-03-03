@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
-import {readToText} from "./BuilderComponents/Helpers/FileHelpers"
+import {FORMAT_M21, readToText} from "./BuilderComponents/Helpers/FileHelpers"
 import {fileTextToState} from "./BuilderComponents/Helpers/FileHelpers"
 import './css/MapBuilder.css'
 import  {fieldsDict}  from "./BuilderComponents/Helpers/fieldsDict.jsx"
@@ -10,7 +10,16 @@ import XRenderFormats from "./BuilderComponents/Main/XRenderFormats"
 import DefaultInfo from "./BuilderComponents/Main/DefaultInfo";
 import legend from "../M3Legend.jpg"
 
-import {removeMapValue, setUserField, addToBeMapped, enableSesarField,disableSesarField,enableUserField,decoupleOldUserFieldsMapValues} from "./BuilderComponents/Helpers/CallBacks"
+import {
+    removeMapValue,
+    setUserField,
+    addToBeMapped,
+    enableSesarField,
+    disableSesarField,
+    enableUserField,
+    decoupleOldUserFieldsMapValues,
+    replaceM21Null, removeExtraM21Field
+} from "./BuilderComponents/Helpers/CallBacks"
 import {LegendPopup} from "./LegendPopup";
 
 
@@ -90,12 +99,24 @@ class XMapBuilder extends Component {
 
         }
 
+
+
         this.setState(preState => ({
             fields: newFields,
             sesarFields:  newSesarFields,
             mapValues : newMapValues //{...preState.mapValues, [sesarValues.selectedField]: newMapValue}
         }))
     };
+    removeM21Field =(sesarField,selectedValue,index)=>{
+        var newMapValues = removeExtraM21Field(this.state.mapValues,sesarField,selectedValue,index)
+        if(selectedValue !== "NULL") {
+            var newFields = enableUserField(selectedValue, this.state.fields);
+        }else newFields = this.state.fields;
+        this.setState(preState => ({
+            fields: newFields,
+            mapValues : newMapValues //{...preState.mapValues, [sesarValues.selectedField]: newMapValue}
+        }))
+    }
 
     multiCallBack=(sesarValues,userField,format,oldValues)=> { //on button click toggles disable for option and sets mapping variable
 
@@ -133,7 +154,12 @@ class XMapBuilder extends Component {
                                     callBack={this.callBack} multiCallBack={this.multiCallBack} changeFormat={this.changeFormat}
                                     addConversionValue={this.addConversionValue}
                                     defaultUnit={this.state.mapValues.defaultUnit}
-                                    removeFieldCallBack={this.removeFieldCallBack}/>
+                                    //removeFieldCallBack={this.removeFieldCallBack}
+                                    mapValues ={this.state.mapValues}
+                                    addExtraM21Field={this.addExtraM21Field}
+                                    setExtraM21Field ={this.setExtraM21Field}
+                                    removeM21Field={this.removeM21Field}
+                    />
                     </div>
 
             } )
@@ -152,6 +178,26 @@ class XMapBuilder extends Component {
         if(extra){temp.extra = {field: extra.field , unit : extra.unit}}
 
         this.setState(preState =>({mapValues : { ...preState.mapValues , [targetValue]: temp  } }))
+    }
+
+    addExtraM21Field = (target)=>{
+        var temp = addToBeMapped(this.state.mapValues,["NULL"],{selectedField:target},FORMAT_M21);
+        this.setState(preState => ({
+
+            mapValues : {...temp}
+        }))
+    }
+
+    setExtraM21Field = (sesarField,selectedValue,index)=>{
+        console.log("SetM21 \n sesarField:",sesarField,"SelectedValues:",selectedValue)
+        let newFields = setUserField(this.state.fields,selectedValue, {selectedField:sesarField}); //returns state.fields
+
+        var newMapValues = replaceM21Null(this.state.mapValues,sesarField,selectedValue,index)
+
+        this.setState(preState => ({
+            fields: {...newFields},
+            mapValues : {...newMapValues}
+        }))
     }
 
 /*############ Takes in state of generated mapValues and produces  .js map file*/

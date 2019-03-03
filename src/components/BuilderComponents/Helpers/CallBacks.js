@@ -99,7 +99,7 @@ export let addToBeMapped=(statePiece,userField,sesarValues,format)=>{
 
     if(sesarValues.selectedField!== null) {
         var temp = {};
-        console.log("mapdebug", statePiece)
+        // console.log("mapdebug", statePiece)
         if (!statePiece[sesarValues.selectedField]) {
 
             temp.userValues = [userField];
@@ -110,7 +110,7 @@ export let addToBeMapped=(statePiece,userField,sesarValues,format)=>{
 
         else {
             temp = statePiece[sesarValues.selectedField];
-            console.log("dastemp", temp)
+            // console.log("dastemp", temp)
             for (var each of userField) {
                 if (temp.userValues.indexOf(each) < 0)
                     temp.userValues = temp.userValues.concat(each);
@@ -175,3 +175,20 @@ export let removeMapValue = (oldVal,newMapValues)=>{
     return (temp)
 };
 
+export let replaceM21Null =(mapValues,sesarField,selectedValue,index)=>{
+    console.log("ReplaceM21 \n mapValues:",mapValues,"sesarField:",sesarField,"SelectedValues",selectedValue)
+    let temp = mapValues;
+    temp[sesarField].userValues[index] = selectedValue;
+    return temp;
+}
+
+export let removeExtraM21Field = (mapValues,sesarField,selectedValue,index)=>{
+    console.log("RemoveM21 \n mapValues:",mapValues,"sesarField:",sesarField,"SelectedValues",selectedValue,"index:",index)
+    let temp = mapValues;
+
+    if(temp[sesarField].userValues[index] === selectedValue) {
+        temp[sesarField].userValues.splice(index, 1)
+    }
+    else{temp[sesarField].userValues.splice(index,0,"ERROR") }
+    return temp;
+}
