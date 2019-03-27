@@ -67,7 +67,9 @@ class XMapBuilder extends Component {
     //     }
     // }
 
-        currentMapValueFields=(oldVal)=>{return (this.state.mapValues[oldVal].userValues)};
+    currentMapValueFields=(oldVal)=>{
+        if(oldVal==="size") return "NULL"
+        return (this.state.mapValues[oldVal].userValues)};
 
     removeFieldCallBack = (oldField,originField) =>{
 
@@ -89,6 +91,7 @@ class XMapBuilder extends Component {
         let newMapValues = addToBeMapped(this.state.mapValues,userField, sesarValues, format); //returns state.mapValues
         console.log("new map values",newMapValues)
         let newFields = setUserField(this.state.fields,userField, sesarValues); //returns state.fields
+        console.log(newFields["FACILITY_CODE"], "\n",newFields);
 
         if(oldField !== null ) {
             console.log("made it!",oldField)
@@ -96,15 +99,12 @@ class XMapBuilder extends Component {
             newFields = enableUserField(userFieldsToEnable,newFields);
             newSesarFields = enableSesarField(oldField,newSesarFields);
             newMapValues = removeMapValue(oldField,newMapValues);
-
         }
-
-
 
         this.setState(preState => ({
             fields: newFields,
             sesarFields:  newSesarFields,
-            mapValues : newMapValues //{...preState.mapValues, [sesarValues.selectedField]: newMapValue}
+            mapValues : newMapValues
         }))
     };
     removeM21Field =(sesarField,selectedValue,index)=>{
@@ -114,28 +114,49 @@ class XMapBuilder extends Component {
         }else newFields = this.state.fields;
         this.setState(preState => ({
             fields: newFields,
-            mapValues : newMapValues //{...preState.mapValues, [sesarValues.selectedField]: newMapValue}
+            mapValues : newMapValues
         }))
     }
 
     multiCallBack=(sesarValues,userField,format,oldValues)=> { //on button click toggles disable for option and sets mapping variable
-
+        console.log("MCB",sesarValues,"uf",userField,format,oldValues)
         //sets mappedTo in new fields
         let newFields = setUserField(this.state.fields,userField, sesarValues); //returns state.fields
         // adds new MapValues
-        let newMapValues = addToBeMapped(this.state.mapValues,userField, sesarValues, format); //returns state.mapValues
+        // let newMapValues = addToBeMapped(this.state.mapValues,userField, sesarValues, format); //returns state.mapValues
+        let mapValues = this.state.mapValues;
+        let nullIndex = mapValues[sesarValues.selectedField].userValues.indexOf("NULL");
+
+        if(nullIndex !== -1) {
+            mapValues = replaceM21Null(mapValues, sesarValues, userField, nullIndex)
+        } else if(userField[0] !== "NULL"){
+            mapValues = addToBeMapped(mapValues,userField,sesarValues,format)
+        }
         //sets values no longer selected to not disabled and no mapped to
         newFields = enableUserField(oldValues,newFields)
         // removes oldvalues from MappingValues
-        newMapValues = decoupleOldUserFieldsMapValues(oldValues,newMapValues[sesarValues.selectedField])
+        mapValues = decoupleOldUserFieldsMapValues(oldValues,mapValues[sesarValues.selectedField])
 
 
 
         this.setState(preState => ({
             fields: newFields,
-            mapValues : {...preState.mapValues, [sesarValues.selectedField]: newMapValues}
+            mapValues : {...preState.mapValues, [sesarValues.selectedField]: mapValues}
         }))
     };
+
+    setExtraM21Field = (sesarField,selectedValue,index)=>{
+        console.log("SetM21 \n sesarField:",sesarField,"SelectedValues:",selectedValue)
+        let newFields = setUserField(this.state.fields,selectedValue, {selectedField:sesarField}); //returns state.fields
+
+        var newMapValues = replaceM21Null(this.state.mapValues,{selectedField:sesarField},selectedValue,index)
+
+        this.setState(preState => ({
+            fields: {...newFields},
+            mapValues : {...newMapValues}
+        }))
+    }
+
 
 
     renderfields=()=> {
@@ -151,7 +172,9 @@ class XMapBuilder extends Component {
                                     sesarFields={this.state.sesarFields}
                                     allUserFields={this.state.fields}
                                     decouple={this.decoupleOldUserFieldsMapValues}
-                                    callBack={this.callBack} multiCallBack={this.multiCallBack} changeFormat={this.changeFormat}
+                                    callBack={this.callBack}
+                                    multiCallBack={this.multiCallBack}
+                                    changeFormat={this.changeFormat}
                                     addConversionValue={this.addConversionValue}
                                     defaultUnit={this.state.mapValues.defaultUnit}
                                     //removeFieldCallBack={this.removeFieldCallBack}
@@ -188,17 +211,7 @@ class XMapBuilder extends Component {
         }))
     }
 
-    setExtraM21Field = (sesarField,selectedValue,index)=>{
-        console.log("SetM21 \n sesarField:",sesarField,"SelectedValues:",selectedValue)
-        let newFields = setUserField(this.state.fields,selectedValue, {selectedField:sesarField}); //returns state.fields
 
-        var newMapValues = replaceM21Null(this.state.mapValues,sesarField,selectedValue,index)
-
-        this.setState(preState => ({
-            fields: {...newFields},
-            mapValues : {...newMapValues}
-        }))
-    }
 
 /*############ Takes in state of generated mapValues and produces  .js map file*/
  makeMapFile=()=>{

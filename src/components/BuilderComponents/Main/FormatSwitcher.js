@@ -2,12 +2,16 @@ import ConversionField from "../ConversionField"
 import React from "react"
 import One2One from "../One2One"
 import Multi2One from "../Multi2One"
-import {FORMAT_CONV,FORMAT_DATE,FORMAT_M21 ,FORMAT_121} from "../Helpers/FileHelpers"
+import {FORMAT_CONV, FORMAT_DATE, FORMAT_M21, FORMAT_121, CM, MM} from "../Helpers/FileHelpers"
 import {allowedMulti} from "../Helpers/renderSelectOptions"
+
 
 
 function ShowOnFormat(props){
     var userField = props.userField;
+
+
+
 
     if(allowedMulti.includes(props.selectedField)) {  //props.format === FORMAT_M21
         // console.log("switch m21")
@@ -16,7 +20,7 @@ function ShowOnFormat(props){
                           selectedField={props.selectedField}
                           allUserFields={props.allUserFields}
                           decouple={props.decouple}
-                          callBack={props.multiCallBack}
+                          multiCallBack={props.multiCallBack}
                           originField={props.originField}
                           registerExtraFields={props.registerExtraFields}
                           minusField={props.minusField}
@@ -41,7 +45,7 @@ function ShowOnFormat(props){
         return <ConversionField addFieldCount={(props.addFieldCount >= 1 ? 1 : 0)}
                                 selectedField={props.selectedField}
                                 allUserFields={props.allUserFields}
-                                callBack={props.multiCallBack}
+                                multiCallBack={props.multiCallBack}
                                 originField={props.originField}
                                 addConversionValue={props.addConversionValue}
                                 defaultUnit={props.defaultUnit}

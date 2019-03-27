@@ -92,9 +92,12 @@ extraUnitField = () =>{
 
 
     submitSelection = () => {
+        console.log("alpa",this.props.selectedField , "stateField",this.state.field,"unselecettd",this.getUnselected());
+
+        let{selectedField, multiCallBack} = this.props;
 
         if(this.state.field) {
-            this.props.callBack({selectedField: this.props.selectedField},
+            multiCallBack({selectedField: selectedField},
                 [this.state.field], //because callback fcts expect array for these values
                 FORMAT_CONV,
                 this.getUnselected())
@@ -103,8 +106,8 @@ extraUnitField = () =>{
         this.setState({submittedField : this.state.field})
     }
 
-    showConversion = () => {
-        if(this.state.field){
+   /* showConversion = () => {
+        if(this.state.field && this.state.field !== "NULL"){
             let defaultVal = this.props.allUserFields[this.props.originField].exampleValue;
             let extraVal = this.props.allUserFields[this.state.field].exampleValue;
             extraVal = (extraVal === undefined) ? 0 : extraVal;
@@ -136,7 +139,7 @@ extraUnitField = () =>{
                 )
             }
         }
-    }
+    }*/
 
 
     showButton = () => {
@@ -163,7 +166,10 @@ extraUnitField = () =>{
                 {this.extraUnitField()}
                 {/*{this.showButton()}*/}
                 {/*{this.showConversion()}*/}
-            </div>
+                <div className="showMapping">
+                    {/*{this.showConversion()}*/}
+                </div>
+                </div>
 
         );
     }

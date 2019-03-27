@@ -27,16 +27,20 @@ export let firstMapOptions = (sesarFields,currentField) =>{
 
 // from ConversionField
 
-export let conversionUserOptions = allUserFields => Object.entries(allUserFields).map(
-    ([key, value]) =>{
-        if (!value.disabled) return (
-            <option className="tooltip" title={value.exampleValue} id={key}  >
-                {key+" "}</option>)
-        else return (
-            <option  className="tooltip" title={value.exampleValue}
-                     id={key} disabled={value.disabled} >
-                {key+" "}</option>
-        )});
+export let conversionUserOptions = allUserFields => {
+    var allChoices = Object.entries(allUserFields).map(
+        ([key, value]) => {
+            if (!value.disabled) return (
+                <option className="tooltip" title={value.exampleValue} id={key}>
+                    {key}</option>)
+            else return (
+                <option className="tooltip" title={value.exampleValue}
+                        id={key} disabled={value.disabled}>
+                    {key}</option>
+            )
+        });
+    return [<option id="NULL" value={"NULL"}>{"SELECT FIELD"}</option>].concat(allChoices);
+}
 
 //from MultiToOne
                                                 //NULL         //sample_comment
@@ -81,7 +85,7 @@ export let toggledUserOptions = (allUserFields, selectedField,originField) =>{
 
 export let defaultInfoOptions=(allUserFields)=> {
     return Object.entries(allUserFields).map(([key, value]) =>{
-        //console.log("key",key,"value",value)
+        console.log("key",key,"value",value)
         return( <option  className="tooltip" title={value.exampleValue} id={key}  value={key} >
             {key+" "} </option>)
     });

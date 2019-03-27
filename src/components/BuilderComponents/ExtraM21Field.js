@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
-import {FORMAT_M21} from "./Helpers/FileHelpers";
+import {FORMAT_CONV, FORMAT_M21} from "./Helpers/FileHelpers";
 import {toggledUserOptions} from "./Helpers/renderSelectOptions";
 
 class ExtraM21Field extends Component {
     constructor(props) {
         super(props);
-        this.state={selectedField:[] }
+        this.state={selectedField:[],wasSelected: "NULL" }
     }
 
     handleSelects = (e) =>{
         var extraField = e.target.value;
         if(extraField) {
 
-            this.setState({selectedField: extraField},this.handleSubmit)
+            this.setState({selectedField: [extraField],wasSelected:this.state.selectedField},this.handleSubmit)
         }}
 
     handleSubmit = () =>{
@@ -24,9 +24,14 @@ class ExtraM21Field extends Component {
 
         //this.props.registerExtraFields(this.state.currentFields); // 2/10 i think its redundant
 
-        if(this.state.selectedField!== "NULL") {
-            this.props.setExtraM21Field(this.state.selectedField,this.props.index)
+        if(this.state.selectedField[0]) {
+
+            //this.props.setExtraM21Field(this.state.selectedField,this.props.index)
             //,this.getUnselected())
+            this.props.multiCallBack({selectedField: this.props.originSesarField},
+                this.state.selectedField, //because callback fcts expect array for these values
+                FORMAT_M21,
+                this.state.wasSelected)
         }
     }
 

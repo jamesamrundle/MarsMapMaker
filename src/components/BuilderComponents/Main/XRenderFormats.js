@@ -5,7 +5,8 @@ import {firstMapOptions} from "../Helpers/renderSelectOptions"
 import {handleOptionSelect} from "../Helpers/CallBacks"
 import AddFieldButton from "./AddFieldButton";
 import Multi2One from "../Multi2One";
-import {FORMAT_M21} from "../Helpers/FileHelpers";
+import {CM, FORMAT_121, FORMAT_CONV, FORMAT_DATE, FORMAT_M21, MM} from "../Helpers/FileHelpers";
+import {isEmpty} from "lodash"
 
 
 
@@ -101,6 +102,121 @@ class XRenderFormats extends Component {
 
     registerExtraFields=(fields)=> this.setState({extraUserFields:fields})
 
+    conversionFormat = (field) => {
+        let {allUserFields, userField, defaultUnit, mapValues} = this.props;
+        let {selectedField} = this.state;
+
+        console.log("MAPVALFIELD",mapValues[field],mapValues[field] === undefined)
+        if(mapValues[field] !== undefined){
+            console.log("allUserFields[mapValues[selectedField].userValues[0]]",allUserFields[mapValues[selectedField].userValues[0]])
+            console.log("mapValues[selectedField]",mapValues[selectedField])
+            let defaultVal = allUserFields[mapValues[selectedField].userValues[0]].exampleValue;
+            let extraVal = "";
+            if(mapValues[selectedField].userValues[1] !== undefined &&
+                    mapValues[selectedField].userValues[1] !== "NULL") {
+                extraVal = allUserFields[mapValues[selectedField].userValues[1]].exampleValue
+            } else {
+                extraVal = "" } ;
+            extraVal = (extraVal === "") ? 0 : extraVal;
+            // let defaultUnit = defaultUnit;
+            let scalar = 0;
+
+            let extraUnit = (mapValues[selectedField].extra !== undefined ? 
+                            mapValues[selectedField].extra.unit : "NULL")
+            if (defaultUnit === CM) {
+                if (extraUnit === MM) {
+                    scalar = 1 / 10;
+                }
+                else scalar=1
+            }
+            if (defaultUnit === MM) {
+                if (extraUnit === CM) {
+                    scalar = 10;
+                }
+                else scalar=1
+
+            }
+
+
+                return (
+                    <div className="inline verify">
+                        <a>
+                            {selectedField}:{ Number(defaultVal) + Number(extraVal * scalar)}</a>
+                    </div>
+                )
+
+        }
+    }
+
+    dateFormat = (field,format) =>{
+        let {allUserFields, userField, defaultUnit, mapValues} = this.props;
+
+        let {selectedField} = this.state;
+        let dateInput;
+
+        if( mapValues.userDateFormat=== undefined) return <a>SET DATE FORMATTING AT TOP OF PAGE</a>
+            else dateInput = mapValues.userDateFormat
+        if(mapValues.selectedField === undefined) return <a>NO MAP VALS</a>
+
+        if(allUserFields[selectedField].exampleValue !== undefined){
+            let exampleValue = allUserFields[selectedField].exampleValue;
+
+            let returnValue = exampleValue.substring(dateInput.indexOf("Y"),dateInput.lastIndexOf("Y")+1)+"-"+
+                exampleValue.substring(dateInput.indexOf("M"),dateInput.lastIndexOf("M")+1)+"-"+
+                exampleValue.substring(dateInput.indexOf("D"),dateInput.lastIndexOf("D")+1)
+
+            return <a>{selectedField}:{returnValue}</a>
+        }
+        return "SORRY"
+    }
+
+    m21Format = (field, format) =>{
+        let {allUserFields, userField, defaultUnit, mapValues} = this.props;
+
+        let {selectedField} = this.state;
+
+        let theseFields = mapValues[selectedField] !== undefined ? mapValues[selectedField].userValues : " "
+        console.log("M21 BBY",theseFields, format)
+
+        let values =  Object.entries(theseFields).map(
+            ([each, value]) =>{
+                console.log("wat each",each,value, format);
+                if(allUserFields[value] !== undefined) {
+                    if (format === FORMAT_M21)
+                        return <a>{value}:{allUserFields[value].exampleValue},</a>
+                    else
+                        return <a>{allUserFields[value].exampleValue}</a>
+                }
+            });
+        let example =( (format === FORMAT_M21 ? <a>{selectedField}: [{values}]</a> : <a>{selectedField}: {values}</a>))
+        console.log("EX>",example)
+        return  <div className="inline verify">{example}</div>
+    }
+
+    returnFieldMapValues=(field,format)=>{
+        console.log("returnfieldmapvals",field, format)
+        format = this.state.selectedField === "sample_comment" ? FORMAT_M21 : format
+        console.log("returnfieldmapvals",field, format)
+
+        if (format === null) return ""
+
+        if(format === FORMAT_CONV){
+            console.log("in format conv")
+            return( <div>{this.conversionFormat(field)}</div>)
+        }
+        if(format === FORMAT_DATE){
+            console.log("in format DATE")
+            return( <div>{this.dateFormat(field)}</div>)
+        }
+        else
+        {
+            console.log("not format conv")
+
+            return <div >{this.m21Format(field,format)}</div>
+        }
+
+
+    }
 
     render() {
         if(this.isDisabled()) {
@@ -156,7 +272,9 @@ class XRenderFormats extends Component {
                     </div>
 
 
-
+                <div>
+                    {this.returnFieldMapValues(this.state.selectedField,this.state.format)}
+                </div>
 
 
             </div>

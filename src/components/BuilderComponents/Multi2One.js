@@ -19,6 +19,8 @@ class Multi2One extends Component {
 
 
     setExtraM21Field = (selectedField, index) =>{
+        console.log("alpa",this.props.selectedField , "selectedField",selectedField);
+
         this.props.setExtraM21Field(this.props.selectedField,selectedField, index)
     }
 
@@ -42,8 +44,10 @@ class Multi2One extends Component {
                        retVal.push(<ExtraM21Field allUserFields ={this.props.allUserFields}
                                                     mapValues ={mapValues[i]}
                                                     index ={i}
+                                                    originSesarField = {this.props.selectedField}
                                                     setExtraM21Field={this.setExtraM21Field}
                                                     removeM21Field={this.removeExtraM21Field}
+                                                    multiCallBack = {this.props.multiCallBack}
                                                      />)
 
                    }

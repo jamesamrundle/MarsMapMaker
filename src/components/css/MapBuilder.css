@@ -77,3 +77,10 @@ fontStyle:italics;
     max-width: fit-content;
     width:auto;
 }
+
+.showMapping{
+    position:relative;
+    left:750px;
+    bottom:75px;
+    color:lightslategrey
+}

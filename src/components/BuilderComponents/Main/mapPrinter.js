@@ -1,7 +1,7 @@
 
 import React from "react";
 
-
+////create tag for userCreator , date/time of creation , descriptor
 
 export default function mapPrinter (mapValues){
     var one2oneMap = ( "let map = {\n")
