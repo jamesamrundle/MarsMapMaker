@@ -193,7 +193,8 @@ class XMapBuilder extends Component {
     setUnit=(e)=>{
         let unit = e.target.value;
         let newSesarFields = disableSesarField(this.state.sesarFields,{selectedField:"size_unit CM IS COMMON"})
-        this.setState(preState => ({mapValues : {...preState.mapValues, defaultUnit : unit },sesarFields:{...newSesarFields} }) )};
+                                                          // defaultUnit : unit    //CONFIG_INFO: {defaultUnit : unit}
+        this.setState(preState => ({mapValues : {...preState.mapValues, CONFIG_INFO: {...preState.mapValues.CONFIG_INFO ,defaultUnit : unit} },sesarFields:{...newSesarFields} }) )};
 
     addConversionValue = (targetValue,extra ) => {
         let temp = this.state.mapValues[targetValue]
@@ -219,8 +220,8 @@ class XMapBuilder extends Component {
      saveAs(blob, "testfile1.txt");
     ;
  }
-
- setDateFormatting=(dateFormat)=>{this.setState(prevState =>({ mapValues : {...this.state.mapValues, userDateFormat:dateFormat}}))}
+                                                                                //userDateFormat:dateFormat              //CONFIG_INFO: {userDateFormat:dateFormat}
+ setDateFormatting=(dateFormat)=>{this.setState(preState =>({ mapValues : {...this.state.mapValues,CONFIG_INFO: {...preState.mapValues.CONFIG_INFO ,userDateFormat:dateFormat} }}))}
 
     render() {
 

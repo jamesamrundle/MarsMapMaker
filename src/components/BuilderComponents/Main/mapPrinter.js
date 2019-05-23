@@ -13,7 +13,11 @@ export default function mapPrinter (mapValues){
 
 
     console.log("mapper map values", mapValues)
+
     for(var each in mapValues){
+        if(each === "CONFIG_INFO") continue;
+
+        console.log("each is , ",each);
         console.log("mapper map values", mapValues[each].userValues.field)
         switch (mapValues[each].format){
             case "one2one":
